@@ -14,7 +14,7 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
       paper: ({ theme }) => ({
         marginTop: 4,
         borderRadius: theme.shape.borderRadius,
-        border: `1px solid ${(theme.vars || theme).palette.divider}`,
+        border: `1px solid ${theme.palette.divider}`,
         backgroundImage: 'none',
         background: 'hsl(0, 0%, 100%)',
         boxShadow:
@@ -36,9 +36,9 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
       spacer: { width: 16 },
       button: ({ theme }) => ({
         backgroundColor: 'transparent',
-        color: (theme.vars || theme).palette.grey[500],
+        color: theme.palette.grey[500],
         ...theme.applyStyles('dark', {
-          color: (theme.vars || theme).palette.grey[400],
+          color: theme.palette.grey[400],
         }),
       }),
     },
@@ -55,11 +55,11 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
     styleOverrides: {
       monthButton: ({ theme }) => ({
         fontSize: theme.typography.body1.fontSize,
-        color: (theme.vars || theme).palette.grey[600],
+        color: theme.palette.grey[600],
         padding: theme.spacing(0.5),
         borderRadius: theme.shape.borderRadius,
         '&:hover': {
-          backgroundColor: (theme.vars || theme).palette.action.hover,
+          backgroundColor: theme.palette.action.hover,
         },
         [`&.${pickersMonthClasses.selected}`]: {
           backgroundColor: '700',
@@ -72,12 +72,12 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
           [`&.${pickersMonthClasses.selected}`]: { backgroundColor: '700' },
         },
         ...theme.applyStyles('dark', {
-          color: (theme.vars || theme).palette.grey[300],
+          color: theme.palette.grey[300],
           '&:hover': {
-            backgroundColor: (theme.vars || theme).palette.action.hover,
+            backgroundColor: theme.palette.action.hover,
           },
           [`&.${pickersMonthClasses.selected}`]: {
-            color: (theme.vars || theme).palette.common.black,
+            color: theme.palette.common.black,
             fontWeight: theme.typography.fontWeightMedium,
             backgroundColor: '300',
           },
@@ -95,12 +95,12 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
     styleOverrides: {
       yearButton: ({ theme }) => ({
         fontSize: theme.typography.body1.fontSize,
-        color: (theme.vars || theme).palette.grey[600],
+        color: theme.palette.grey[600],
         padding: theme.spacing(0.5),
         borderRadius: theme.shape.borderRadius,
         height: 'fit-content',
         '&:hover': {
-          backgroundColor: (theme.vars || theme).palette.action.hover,
+          backgroundColor: theme.palette.action.hover,
         },
         [`&.${pickersYearClasses.selected}`]: {
           backgroundColor: '700',
@@ -113,12 +113,12 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
           [`&.${pickersYearClasses.selected}`]: { backgroundColor: '700' },
         },
         ...theme.applyStyles('dark', {
-          color: (theme.vars || theme).palette.grey[300],
+          color: theme.palette.grey[300],
           '&:hover': {
-            backgroundColor: (theme.vars || theme).palette.action.hover,
+            backgroundColor: theme.palette.action.hover,
           },
           [`&.${pickersYearClasses.selected}`]: {
-            color: (theme.vars || theme).palette.common.black,
+            color: theme.palette.common.black,
             fontWeight: theme.typography.fontWeightMedium,
             backgroundColor: '300',
           },
@@ -136,11 +136,11 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
     styleOverrides: {
       root: ({ theme }) => ({
         fontSize: theme.typography.body1.fontSize,
-        color: (theme.vars || theme).palette.grey[600],
+        color: theme.palette.grey[600],
         padding: theme.spacing(0.5),
         borderRadius: theme.shape.borderRadius,
         '&:hover': {
-          backgroundColor: (theme.vars || theme).palette.action.hover,
+          backgroundColor: theme.palette.action.hover,
         },
         [`&.${pickersDayClasses.selected}`]: {
           backgroundColor: '700',
@@ -153,12 +153,12 @@ export const datePickersCustomizations: PickerComponents<Theme> = {
           [`&.${pickersDayClasses.selected}`]: { backgroundColor: '700' },
         },
         ...theme.applyStyles('dark', {
-          color: (theme.vars || theme).palette.grey[300],
+          color: theme.palette.grey[300],
           '&:hover': {
-            backgroundColor: (theme.vars || theme).palette.action.hover,
+            backgroundColor: theme.palette.action.hover,
           },
           [`&.${pickersDayClasses.selected}`]: {
-            color: (theme.vars || theme).palette.common.black,
+            color: theme.palette.common.black,
             fontWeight: theme.typography.fontWeightMedium,
             backgroundColor: '300',
           },

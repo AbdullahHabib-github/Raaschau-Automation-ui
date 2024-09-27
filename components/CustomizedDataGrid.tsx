@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { columns, rows } from '../internals/data/gridData';
 
@@ -17,7 +16,7 @@ export default function CustomizedDataGrid() {
       }}
       pageSizeOptions={[10, 20, 50]}
       disableColumnResize
-      density="compact"
+      density='compact'
       slotProps={{
         filterPanel: {
           filterFormProps: {

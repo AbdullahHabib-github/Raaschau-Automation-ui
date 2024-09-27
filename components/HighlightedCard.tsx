@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
@@ -17,8 +16,8 @@ export default function HighlightedCard() {
       <CardContent>
         <InsightsRoundedIcon />
         <Typography
-          component="h2"
-          variant="subtitle2"
+          component='h2'
+          variant='subtitle2'
           gutterBottom
           sx={{ fontWeight: '600' }}
         >
@@ -28,9 +27,9 @@ export default function HighlightedCard() {
           Uncover performance and visitor insights with our data wizardry.
         </Typography>
         <Button
-          variant="contained"
-          size="small"
-          color="primary"
+          variant='contained'
+          size='small'
+          color='primary'
           endIcon={<ChevronRightRoundedIcon />}
           fullWidth={isSmallScreen}
         >

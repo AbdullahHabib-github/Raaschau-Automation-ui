@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
@@ -7,7 +6,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import LinearProgress, {
+  linearProgressClasses,
+} from '@mui/material/LinearProgress';
 
 import {
   IndiaFlag,
@@ -59,7 +60,7 @@ const StyledText = styled('text', {
 })<StyledTextProps>(({ theme }) => ({
   textAnchor: 'middle',
   dominantBaseline: 'central',
-  fill: (theme.vars || theme).palette.text.secondary,
+  fill: theme.palette.text.secondary,
   variants: [
     {
       props: {
@@ -103,14 +104,14 @@ function PieCenterLabel({ primaryText, secondaryText }: PieCenterLabelProps) {
   const secondaryY = primaryY + 24;
 
   return (
-    <React.Fragment>
-      <StyledText variant="primary" x={left + width / 2} y={primaryY}>
+    <>
+      <StyledText variant='primary' x={left + width / 2} y={primaryY}>
         {primaryText}
       </StyledText>
-      <StyledText variant="secondary" x={left + width / 2} y={secondaryY}>
+      <StyledText variant='secondary' x={left + width / 2} y={secondaryY}>
         {secondaryText}
       </StyledText>
-    </React.Fragment>
+    </>
   );
 }
 
@@ -124,11 +125,11 @@ const colors = [
 export default function ChartUserByCountry() {
   return (
     <Card
-      variant="outlined"
+      variant='outlined'
       sx={{ display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1 }}
     >
       <CardContent>
-        <Typography component="h2" variant="subtitle2">
+        <Typography component='h2' variant='subtitle2'>
           Users by country
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -155,35 +156,35 @@ export default function ChartUserByCountry() {
               legend: { hidden: true },
             }}
           >
-            <PieCenterLabel primaryText="98.5K" secondaryText="Total" />
+            <PieCenterLabel primaryText='98.5K' secondaryText='Total' />
           </PieChart>
         </Box>
         {countries.map((country, index) => (
           <Stack
             key={index}
-            direction="row"
+            direction='row'
             sx={{ alignItems: 'center', gap: 2, pb: 2 }}
           >
             {country.flag}
             <Stack sx={{ gap: 1, flexGrow: 1 }}>
               <Stack
-                direction="row"
+                direction='row'
                 sx={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   gap: 2,
                 }}
               >
-                <Typography variant="body2" sx={{ fontWeight: '500' }}>
+                <Typography variant='body2' sx={{ fontWeight: '500' }}>
                   {country.name}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                   {country.value}%
                 </Typography>
               </Stack>
               <LinearProgress
-                variant="determinate"
-                aria-label="Number of users by country"
+                variant='determinate'
+                aria-label='Number of users by country'
                 value={country.value}
                 sx={{
                   [`& .${linearProgressClasses.bar}`]: {

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,6 +9,7 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import SideMenuMobile from './SideMenuMobile';
 import MenuButton from './MenuButton';
+import { useState } from 'react';
 
 const Toolbar = styled(MuiToolbar)({
   width: '100%',
@@ -28,7 +28,7 @@ const Toolbar = styled(MuiToolbar)({
 });
 
 export default function AppNavbar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -36,7 +36,7 @@ export default function AppNavbar() {
 
   return (
     <AppBar
-      position="fixed"
+      position='fixed'
       sx={{
         display: { xs: 'auto', md: 'none' },
         boxShadow: 0,
@@ -47,9 +47,9 @@ export default function AppNavbar() {
         top: 'var(--template-frame-height, 0px)',
       }}
     >
-      <Toolbar variant="regular">
+      <Toolbar variant='regular'>
         <Stack
-          direction="row"
+          direction='row'
           sx={{
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -57,13 +57,17 @@ export default function AppNavbar() {
             width: '100%',
           }}
         >
-          <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
+          <Stack direction='row' spacing={1} sx={{ justifyContent: 'center' }}>
             <CustomIcon />
-            <Typography variant="h4" component="h1" sx={{ color: 'text.primary' }}>
+            <Typography
+              variant='h4'
+              component='h1'
+              sx={{ color: 'text.primary' }}
+            >
               Dashboard
             </Typography>
           </Stack>
-          <MenuButton aria-label="menu" onClick={toggleDrawer(true)}>
+          <MenuButton aria-label='menu' onClick={toggleDrawer(true)}>
             <MenuRoundedIcon />
           </MenuButton>
           <SideMenuMobile open={open} toggleDrawer={toggleDrawer} />
@@ -93,7 +97,7 @@ export function CustomIcon() {
         boxShadow: 'inset 0 2px 5px rgba(255, 255, 255, 0.3)',
       }}
     >
-      <DashboardRoundedIcon color="inherit" sx={{ fontSize: '1rem' }} />
+      <DashboardRoundedIcon color='inherit' sx={{ fontSize: '1rem' }} />
     </Box>
   );
 }

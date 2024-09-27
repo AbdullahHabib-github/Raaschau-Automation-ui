@@ -1,4 +1,3 @@
-import * as React from 'react';
 import clsx from 'clsx';
 import { animated, useSpring } from '@react-spring/web';
 import { TransitionProps } from '@mui/material/transitions';
@@ -22,6 +21,7 @@ import { TreeItem2Icon } from '@mui/x-tree-view/TreeItem2Icon';
 import { TreeItem2Provider } from '@mui/x-tree-view/TreeItem2Provider';
 import { TreeViewBaseItem } from '@mui/x-tree-view/models';
 import { useTheme } from '@mui/material/styles';
+import { forwardRef, HTMLAttributes, ReactNode, Ref } from 'react';
 
 type Color = 'blue' | 'green';
 
@@ -97,16 +97,21 @@ function TransitionComponent(props: TransitionProps) {
 }
 
 interface CustomLabelProps {
-  children: React.ReactNode;
+  children: ReactNode;
   color?: Color;
   expandable?: boolean;
 }
 
-function CustomLabel({ color, expandable, children, ...other }: CustomLabelProps) {
+function CustomLabel({
+  color,
+  expandable,
+  children,
+  ...other
+}: CustomLabelProps) {
   const theme = useTheme();
   const colors = {
-    blue: (theme.vars || theme).palette.primary.main,
-    green: (theme.vars || theme).palette.success.main,
+    blue: theme.palette.primary.main,
+    green: theme.palette.success.main,
   };
 
   const iconColor = color ? colors[color] : null;
@@ -114,8 +119,8 @@ function CustomLabel({ color, expandable, children, ...other }: CustomLabelProps
     <TreeItem2Label {...other} sx={{ display: 'flex', alignItems: 'center' }}>
       {iconColor && <DotIcon color={iconColor} />}
       <Typography
-        className="labelText"
-        variant="body2"
+        className='labelText'
+        variant='body2'
         sx={{ color: 'text.primary' }}
       >
         {children}
@@ -126,11 +131,11 @@ function CustomLabel({ color, expandable, children, ...other }: CustomLabelProps
 
 interface CustomTreeItemProps
   extends Omit<UseTreeItem2Parameters, 'rootRef'>,
-    Omit<React.HTMLAttributes<HTMLLIElement>, 'onFocus'> {}
+    Omit<HTMLAttributes<HTMLLIElement>, 'onFocus'> {}
 
-const CustomTreeItem = React.forwardRef(function CustomTreeItem(
+const CustomTreeItem = forwardRef(function CustomTreeItem(
   props: CustomTreeItemProps,
-  ref: React.Ref<HTMLLIElement>,
+  ref: Ref<HTMLLIElement>
 ) {
   const { id, itemId, label, disabled, children, ...other } = props;
 
@@ -180,16 +185,16 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
 export default function CustomizedTreeView() {
   return (
     <Card
-      variant="outlined"
+      variant='outlined'
       sx={{ display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1 }}
     >
       <CardContent>
-        <Typography component="h2" variant="subtitle2">
+        <Typography component='h2' variant='subtitle2'>
           Product tree
         </Typography>
         <RichTreeView
           items={ITEMS}
-          aria-label="pages"
+          aria-label='pages'
           multiSelect
           defaultExpandedItems={['1', '1.1']}
           defaultSelectedItems={['1.1', '1.1.1']}

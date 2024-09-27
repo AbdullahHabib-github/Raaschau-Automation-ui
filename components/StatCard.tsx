@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -35,9 +34,9 @@ function getDaysInMonth(month: number, year: number) {
 function AreaGradient({ color, id }: { color: string; id: string }) {
   return (
     <defs>
-      <linearGradient id={id} x1="50%" y1="0%" x2="50%" y2="100%">
-        <stop offset="0%" stopColor={color} stopOpacity={0.3} />
-        <stop offset="100%" stopColor={color} stopOpacity={0} />
+      <linearGradient id={id} x1='50%' y1='0%' x2='50%' y2='100%'>
+        <stop offset='0%' stopColor={color} stopOpacity={0.3} />
+        <stop offset='100%' stopColor={color} stopOpacity={0} />
       </linearGradient>
     </defs>
   );
@@ -79,26 +78,26 @@ export default function StatCard({
   const trendValues = { up: '+25%', down: '-25%', neutral: '+5%' };
 
   return (
-    <Card variant="outlined" sx={{ height: '100%', flexGrow: 1 }}>
+    <Card variant='outlined' sx={{ height: '100%', flexGrow: 1 }}>
       <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
+        <Typography component='h2' variant='subtitle2' gutterBottom>
           {title}
         </Typography>
         <Stack
-          direction="column"
+          direction='column'
           sx={{ justifyContent: 'space-between', flexGrow: '1', gap: 1 }}
         >
           <Stack sx={{ justifyContent: 'space-between' }}>
             <Stack
-              direction="row"
+              direction='row'
               sx={{ justifyContent: 'space-between', alignItems: 'center' }}
             >
-              <Typography variant="h4" component="p">
+              <Typography variant='h4' component='p'>
                 {value}
               </Typography>
-              <Chip size="small" color={color} label={trendValues[trend]} />
+              <Chip size='small' color={color} label={trendValues[trend]} />
             </Stack>
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            <Typography variant='caption' sx={{ color: 'text.secondary' }}>
               {interval}
             </Typography>
           </Stack>

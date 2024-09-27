@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { columns } from '../internals/data/gridTable';
 import { useApp } from '../src/hooks/use-app';
