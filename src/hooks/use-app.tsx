@@ -16,6 +16,7 @@ import {
   where,
   startAt,
   Query,
+  QueryConstraint,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 import {
@@ -95,7 +96,7 @@ export const useApp = () => {
   }
 
   useEffect(() => {
-    const arr: unknown[] = [
+    const arr: QueryConstraint[] = [
       orderBy('subject', 'asc'),
       limit(paginationModal.pageSize),
     ];
@@ -116,7 +117,7 @@ export const useApp = () => {
       );
       setCounts(snapShot.data().count);
 
-      const arr: unknown[] = [
+      const arr: QueryConstraint[] = [
         orderBy('subject', 'asc'),
         limit(paginationModal.pageSize),
       ];
@@ -130,7 +131,7 @@ export const useApp = () => {
   }, []);
 
   function customPagination(v: Pagination) {
-    const arr: unknown[] = [orderBy('subject', 'asc')];
+    const arr: QueryConstraint[] = [orderBy('subject', 'asc')];
     if (onlyDone) {
       arr.push(where('done', '==', true));
     }
