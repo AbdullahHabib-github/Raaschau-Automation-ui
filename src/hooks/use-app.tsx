@@ -10,9 +10,15 @@ import {
   endBefore,
   limitToLast,
   QueryDocumentSnapshot,
+  updateDoc,
+  doc,
+  setDoc,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
-import { functionMap } from '../../internals/data/gridTable';
+import {
+  fieldToAddCollection,
+  functionMap,
+} from '../../internals/data/gridTable';
 
 export type Agreement = {
   id: string;
@@ -94,7 +100,7 @@ export const useApp = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const customPagination = (v: Pagination) => {
+  function customPagination(v: Pagination) {
     async function getAgreements(isInc: boolean) {
       setLoading(true);
 
@@ -119,7 +125,38 @@ export const useApp = () => {
 
     getAgreements(paginationModal.page < v.page);
     setPaginationModal(v);
-  };
+  }
+
+  async function updateRecord(temp: Agreement) {
+    try {
+      const agreementDocRef = doc(db, 'agreements', temp.id);
+      const obj = {};
+      fieldToAddCollection.forEach((v) => {
+        obj[v] = temp[v];
+      });
+      await setDoc(agreementDocRef, temp);
+      await updateDoc(agreementDocRef, {});
+    } catch (err) {
+      console.log('failed to update entry', err);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function processRowUpdate(updatedRow: Agreement, _originalRow: Agreement) {
+    const calculatedFields = {};
+
+    Object.keys(functionMap).forEach((k) => {
+      calculatedFields[k] = functionMap[k](undefined, updatedRow);
+    });
+
+    const data = {
+      ...updatedRow,
+      ...calculatedFields,
+    };
+    updateRecord(data);
+
+    return data;
+  }
 
   return {
     agreements,
@@ -127,5 +164,6 @@ export const useApp = () => {
     paginationModal,
     setPaginationModal: customPagination,
     counts,
+    processRowUpdate,
   };
 };

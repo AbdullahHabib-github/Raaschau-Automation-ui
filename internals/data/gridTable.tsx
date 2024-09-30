@@ -96,8 +96,22 @@ export const functionMap = {
   montageDiff: getMontageDiff,
   finalMontage: getFinalMontage,
   ny: getNy,
-  Gammel: getGammel,
+  gammel: getGammel,
 };
+
+export const fieldToAddCollection = [
+  // 'appointmentNumber',
+  // 'subject',
+  // 'AgreementManager',
+  // 'Real_Projektering_hr',
+  // 'Real_Svendetimer_hr',
+  // 'Real_Montagetimer_hr',
+  'Tilbud',
+  'Montage',
+  'Underleverandør',
+  'ny',
+  'gammel',
+];
 
 export const columns: GridColDef[] = [
   {
@@ -111,8 +125,8 @@ export const columns: GridColDef[] = [
   {
     field: 'subject',
     headerName: 'Subject',
-    minWidth: 180,
-    maxWidth: 181,
+    minWidth: 350,
+    maxWidth: 351,
   },
   {
     field: 'AgreementManager',
@@ -243,6 +257,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    editable: true,
     valueGetter: getNy,
   },
   {
@@ -252,6 +267,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    editable: true,
     valueGetter: getGammel,
   },
   {

@@ -1,29 +1,22 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { columnGroup, columns, functionMap } from '../internals/data/gridTable';
-import { Agreement, useApp } from '../src/hooks/use-app';
+import { columnGroup, columns } from '../internals/data/gridTable';
+import { useApp } from '../src/hooks/use-app';
 
 export default function CustomizedDataTable() {
-  const { loading, agreements, paginationModal, setPaginationModal, counts } =
-    useApp();
-
-  function processRow(updatedRow: Agreement) {
-    const calculatedFields = {};
-
-    Object.keys(functionMap).forEach((k) => {
-      calculatedFields[k] = functionMap[k](undefined, updatedRow);
-    });
-
-    return {
-      ...updatedRow,
-      ...calculatedFields,
-    };
-  }
+  const {
+    loading,
+    agreements,
+    paginationModal,
+    setPaginationModal,
+    counts,
+    processRowUpdate,
+  } = useApp();
 
   return (
     <DataGrid
       paginationMode='server'
+      // sx={{  }}
       autoHeight
-      checkboxSelection
       rows={agreements}
       rowCount={counts}
       columns={columns}
@@ -31,7 +24,7 @@ export default function CustomizedDataTable() {
       onProcessRowUpdateError={(err) => {
         console.log(err);
       }}
-      processRowUpdate={processRow}
+      processRowUpdate={processRowUpdate}
       loading={loading}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
