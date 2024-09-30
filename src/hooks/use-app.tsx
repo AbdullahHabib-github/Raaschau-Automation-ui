@@ -9,19 +9,35 @@ import {
   orderBy,
   endBefore,
   limitToLast,
+  QueryDocumentSnapshot,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
+import { functionMap } from '../../internals/data/gridTable';
 
 export type Agreement = {
   id: string;
-  subject: string;
-  done: boolean;
   appointmentNumber: string;
+  subject: string;
   AgreementManager: string;
-  Real_total_hr: number;
-  Real_Montagetimer_hr: number;
-  Real_Svendetimer_hr: number;
-  Real_Projektering_hr: number;
+  Tilbud: string;
+  Montage: string;
+  Underleverandør: string;
+  Materialer: string;
+  estimatedProjection: string;
+  estimatedProduction: string;
+  estimatedMontage: string;
+  Real_Projektering_hr: string;
+  Real_Svendetimer_hr: string;
+  Real_Montagetimer_hr: string;
+  Real_total_hr: string;
+  projectionDiff: string;
+  productionDiff: string;
+  ny: string;
+  gammel: string;
+  estimateDone: string;
+  plusMinus: string;
+  montageDiff: string;
+  finalMontage: string;
 };
 
 export type Pagination = {
@@ -30,16 +46,32 @@ export type Pagination = {
 };
 
 export const useApp = () => {
+  const [counts, setCounts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
   const [paginationModal, setPaginationModal] = useState<Pagination>({
     page: 0,
     pageSize: 10,
   });
-  const [counts, setCounts] = useState(0);
+
+  function processRow(v: QueryDocumentSnapshot) {
+    const data: Agreement = v.data() as Agreement;
+
+    const calculatedFields = {};
+
+    Object.keys(functionMap).forEach((k) => {
+      calculatedFields[k] = functionMap[k](undefined, data);
+    });
+
+    return {
+      ...data,
+      ...calculatedFields,
+      id: v.id,
+    };
+  }
 
   useEffect(() => {
-    (async () => {
+    async function getInitialAgreements() {
       const q = query(collection(db, 'agreements'));
       const snapShot = await getCountFromServer(q);
       setCounts(snapShot.data().count);
@@ -50,30 +82,22 @@ export const useApp = () => {
           limit(paginationModal.pageSize)
         );
         const snapShot = await getDocs(q);
-        const arr: Agreement[] = snapShot.docs.map((v) => {
-          const data: Agreement = v.data() as Agreement;
-          return {
-            ...data,
-            id: v.id,
-          };
-        });
+        const arr: Agreement[] = snapShot.docs.map(processRow);
         setAgreements(arr);
       } catch (err) {
         console.log(err);
       } finally {
         setLoading(false);
       }
-    })();
+    }
+    getInitialAgreements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const customPagination = (v: Pagination) => {
-    const getAgreements = async (isInc: boolean) => {
+    async function getAgreements(isInc: boolean) {
       setLoading(true);
-      console.log(
-        isInc ? 'inc' : 'dec',
-        isInc ? agreements.at(-1)?.subject : agreements.at(0)?.subject,
-        !isInc && JSON.stringify(agreements, null, 2)
-      );
+
       try {
         const q = query(
           collection(db, 'agreements'),
@@ -84,20 +108,14 @@ export const useApp = () => {
           isInc ? limit(v.pageSize) : limitToLast(v.pageSize)
         );
         const snapShot = await getDocs(q);
-        const arr: Agreement[] = snapShot.docs.map((v) => {
-          const data: Agreement = v.data() as Agreement;
-          return {
-            ...data,
-            id: v.id,
-          };
-        });
+        const arr: Agreement[] = snapShot.docs.map(processRow);
         setAgreements(arr);
       } catch (err) {
         console.log(err);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     getAgreements(paginationModal.page < v.page);
     setPaginationModal(v);
