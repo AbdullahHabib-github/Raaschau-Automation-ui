@@ -13,6 +13,9 @@ import {
   updateDoc,
   doc,
   setDoc,
+  where,
+  startAt,
+  Query,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 import {
@@ -52,6 +55,7 @@ export type Pagination = {
 };
 
 export const useApp = () => {
+  const [onlyDone, setOnlyDone] = useState(false);
   const [counts, setCounts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
@@ -76,54 +80,74 @@ export const useApp = () => {
     };
   }
 
+  async function getAgreements(q: Query) {
+    setLoading(true);
+    try {
+      const snapShot = await getDocs(q);
+      const arr: Agreement[] = snapShot.docs.map(processRow);
+      setAgreements(arr);
+      console.log('got data');
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    const arr: unknown[] = [
+      orderBy('subject', 'asc'),
+      limit(paginationModal.pageSize),
+    ];
+    if (agreements.at(0)?.subject) {
+      arr.push(startAt(agreements.at(0)?.subject));
+    }
+    if (onlyDone) {
+      arr.push(where('done', '==', true));
+    }
+    getAgreements(query(collection(db, 'agreements'), ...arr));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onlyDone]);
+
   useEffect(() => {
     async function getInitialAgreements() {
-      const q = query(collection(db, 'agreements'));
-      const snapShot = await getCountFromServer(q);
+      const snapShot = await getCountFromServer(
+        query(collection(db, 'agreements'))
+      );
       setCounts(snapShot.data().count);
-      try {
-        const q = query(
-          collection(db, 'agreements'),
-          orderBy('subject', 'asc'),
-          limit(paginationModal.pageSize)
-        );
-        const snapShot = await getDocs(q);
-        const arr: Agreement[] = snapShot.docs.map(processRow);
-        setAgreements(arr);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
+
+      const arr: unknown[] = [
+        orderBy('subject', 'asc'),
+        limit(paginationModal.pageSize),
+      ];
+      if (onlyDone) {
+        arr.push(where('done', '==', true));
       }
+      getAgreements(query(collection(db, 'agreements'), ...arr));
     }
     getInitialAgreements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function customPagination(v: Pagination) {
-    async function getAgreements(isInc: boolean) {
-      setLoading(true);
-
-      try {
-        const q = query(
-          collection(db, 'agreements'),
-          orderBy('subject', 'asc'),
-          isInc
-            ? startAfter(agreements.at(-1)?.subject)
-            : endBefore(agreements.at(0)?.subject),
-          isInc ? limit(v.pageSize) : limitToLast(v.pageSize)
-        );
-        const snapShot = await getDocs(q);
-        const arr: Agreement[] = snapShot.docs.map(processRow);
-        setAgreements(arr);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+    const arr: unknown[] = [orderBy('subject', 'asc')];
+    if (onlyDone) {
+      arr.push(where('done', '==', true));
     }
 
-    getAgreements(paginationModal.page < v.page);
+    if (paginationModal.page < v.page) {
+      arr.push(startAfter(agreements.at(-1)?.subject));
+      arr.push(limit(paginationModal.pageSize));
+    } else if (paginationModal.page > v.page) {
+      arr.push(endBefore(agreements.at(0)?.subject));
+      arr.push(limitToLast(paginationModal.pageSize));
+    } else {
+      if (agreements.at(0)?.subject) {
+        arr?.push(startAt(agreements.at(0).subject));
+      }
+      arr.push(limit(v.pageSize));
+    }
+    getAgreements(query(collection(db, 'agreements'), ...arr));
     setPaginationModal(v);
   }
 
@@ -165,5 +189,7 @@ export const useApp = () => {
     setPaginationModal: customPagination,
     counts,
     processRowUpdate,
+    onlyDone,
+    setOnlyDone,
   };
 };
