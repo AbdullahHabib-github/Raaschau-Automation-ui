@@ -67,7 +67,7 @@ export default function AppNavbar() {
           >
             <CustomIcon />
             <Typography
-              variant='h4'
+              variant='h5'
               component='h1'
               sx={{ color: 'text.primary' }}
             >

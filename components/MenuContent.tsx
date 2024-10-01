@@ -44,7 +44,7 @@ export default function MenuContent() {
                 borderBottomRightRadius: '60px',
               },
               [`& .${listItemButtonClasses.selected} `]: {
-                color: 'blue',
+                color: '#1081cc',
               },
             }}
           >
@@ -53,10 +53,15 @@ export default function MenuContent() {
               sx={{
                 [`.${listItemTextClasses.primary}`]: {
                   fontWeight: '550',
+                  fontFamily: 'monospace',
                 },
               }}
             >
-              <ListItemIcon sx={{ scale: 1.2 }}>{item.icon}</ListItemIcon>
+              <ListItemIcon
+                sx={{ scale: 1.2, color: index === 0 ? '#1081cc' : 'inherit' }}
+              >
+                {item.icon}
+              </ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
