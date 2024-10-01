@@ -30,15 +30,15 @@ const Toolbar = styled(MuiToolbar)({
 export default function AppNavbar() {
   const [open, setOpen] = useState(false);
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
+  const toggleDrawer = () => {
+    setOpen((v) => !v);
   };
 
   return (
     <AppBar
       position='fixed'
       sx={{
-        display: { xs: 'auto', md: 'none' },
+        display: { xs: 'auto' },
         boxShadow: 0,
         bgcolor: 'background.paper',
         backgroundImage: 'none',
@@ -50,14 +50,21 @@ export default function AppNavbar() {
       <Toolbar variant='regular'>
         <Stack
           direction='row'
+          spacing={3}
           sx={{
-            justifyContent: 'space-between',
             alignItems: 'center',
             flexGrow: 1,
             width: '100%',
           }}
         >
-          <Stack direction='row' spacing={1} sx={{ justifyContent: 'center' }}>
+          <MenuButton aria-label='menu' onClick={toggleDrawer}>
+            <MenuRoundedIcon />
+          </MenuButton>
+          <Stack
+            direction='row'
+            spacing={1}
+            sx={{ alignItems: 'center', flex: '1' }}
+          >
             <CustomIcon />
             <Typography
               variant='h4'
@@ -67,9 +74,6 @@ export default function AppNavbar() {
               Dashboard
             </Typography>
           </Stack>
-          <MenuButton aria-label='menu' onClick={toggleDrawer(true)}>
-            <MenuRoundedIcon />
-          </MenuButton>
           <SideMenuMobile open={open} toggleDrawer={toggleDrawer} />
         </Stack>
       </Toolbar>

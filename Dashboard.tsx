@@ -8,15 +8,15 @@ import Stack from '@mui/material/Stack';
 import AppNavbar from './components/AppNavbar';
 import Header from './components/Header';
 import MainGrid from './components/MainGrid';
-import SideMenu from './components/SideMenu';
+// import SideMenu from './components/SideMenu';
 
 export default function Dashboard() {
   return (
     <>
       <CssBaseline enableColorScheme />
       <Box sx={{ display: 'flex' }}>
-        <SideMenu />
         <AppNavbar />
+        {/* <SideMenu /> */}
         {/* Main content */}
         <Box
           component='main'
@@ -32,7 +32,7 @@ export default function Dashboard() {
               alignItems: 'center',
               mx: 3,
               pb: 10,
-              mt: { xs: 8, md: 0 },
+              mt: { xs: 8 },
             }}
           >
             <Header />

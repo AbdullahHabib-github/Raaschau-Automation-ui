@@ -1,22 +1,18 @@
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItem, { listItemClasses } from '@mui/material/ListItem';
+import ListItemButton, {
+  listItemButtonClasses,
+} from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import ListItemText, { listItemTextClasses } from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 
 const mainListItems = [
   // { text: 'Home', icon: <HomeRoundedIcon /> },
   // { text: 'Analytics', icon: <AnalyticsRoundedIcon /> },
   // { text: 'Clients', icon: <PeopleRoundedIcon /> },
-  { text: 'Agreements', icon: <AssignmentRoundedIcon /> },
+  { text: 'Fokus sager', icon: <AssignmentRoundedIcon /> },
 ];
 
 // const secondaryListItems = [
@@ -27,12 +23,37 @@ const mainListItems = [
 
 export default function MenuContent() {
   return (
-    <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
-      <List dense>
+    <Stack
+      sx={{
+        flexGrow: 1,
+        pr: 1,
+        justifyContent: 'space-between',
+        minWidth: 'content-fit',
+      }}
+    >
+      <List>
         {mainListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
+          <ListItem
+            disablePadding
+            key={index}
+            sx={{
+              display: 'block',
+              [`& .${listItemButtonClasses.root}`]: {
+                padding: '12px 60px 12px 26px',
+                borderTopRightRadius: '60px',
+                borderBottomRightRadius: '60px',
+              },
+            }}
+          >
+            <ListItemButton
+              selected={index === 0}
+              sx={{
+                [`.${listItemTextClasses.primary}`]: {
+                  fontWeight: '550',
+                },
+              }}
+            >
+              <ListItemIcon sx={{ scale: 1.2 }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
