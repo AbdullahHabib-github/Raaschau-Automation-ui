@@ -1,5 +1,5 @@
 import List from '@mui/material/List';
-import ListItem, { listItemClasses } from '@mui/material/ListItem';
+import ListItem from '@mui/material/ListItem';
 import ListItemButton, {
   listItemButtonClasses,
 } from '@mui/material/ListItemButton';
@@ -42,6 +42,9 @@ export default function MenuContent() {
                 padding: '12px 60px 12px 26px',
                 borderTopRightRadius: '60px',
                 borderBottomRightRadius: '60px',
+              },
+              [`& .${listItemButtonClasses.selected} `]: {
+                color: 'blue',
               },
             }}
           >
