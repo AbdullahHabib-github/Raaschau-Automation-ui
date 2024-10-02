@@ -87,7 +87,6 @@ export const useApp = () => {
       const snapShot = await getDocs(q);
       const arr: Agreement[] = snapShot.docs.map(processRow);
       setAgreements(arr);
-      console.log('got data');
     } catch (err) {
       console.log(err);
     } finally {
@@ -112,8 +111,12 @@ export const useApp = () => {
 
   useEffect(() => {
     async function getInitialAgreements() {
+      const countQuery: QueryConstraint[] = [];
+      if (onlyDone) {
+        countQuery.push(where('done', '==', true));
+      }
       const snapShot = await getCountFromServer(
-        query(collection(db, 'agreements'))
+        query(collection(db, 'agreements'), ...countQuery)
       );
       setCounts(snapShot.data().count);
 
@@ -128,7 +131,7 @@ export const useApp = () => {
     }
     getInitialAgreements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onlyDone]);
 
   function customPagination(v: Pagination) {
     const arr: QueryConstraint[] = [orderBy('subject', 'asc')];
