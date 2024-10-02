@@ -27,7 +27,6 @@ export default function SideMenuMobile({
     >
       <Stack
         sx={{
-          maxWidth: { xs: '90dvw', sm: '40dvw', lg: '20dvw' },
           height: '100%',
         }}
       >

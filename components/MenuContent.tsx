@@ -4,9 +4,10 @@ import ListItemButton, {
   listItemButtonClasses,
 } from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText, { listItemTextClasses } from '@mui/material/ListItemText';
+import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import { Typography } from '@mui/material';
 
 const mainListItems = [
   // { text: 'Home', icon: <HomeRoundedIcon /> },
@@ -39,7 +40,10 @@ export default function MenuContent() {
             sx={{
               display: 'block',
               [`& .${listItemButtonClasses.root}`]: {
-                padding: '12px 60px 12px 26px',
+                pt: '12px',
+                pb: '12px',
+                pr: '110px',
+                pl: '30px',
                 borderTopRightRadius: '60px',
                 borderBottomRightRadius: '60px',
               },
@@ -48,21 +52,23 @@ export default function MenuContent() {
               },
             }}
           >
-            <ListItemButton
-              selected={index === 0}
-              sx={{
-                [`.${listItemTextClasses.primary}`]: {
-                  fontWeight: '550',
-                  fontFamily: 'monospace',
-                },
-              }}
-            >
+            <ListItemButton selected={index === 0}>
               <ListItemIcon
                 sx={{ scale: 1.2, color: index === 0 ? '#1081cc' : 'inherit' }}
               >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText>
+                <Typography
+                  variant='body1'
+                  sx={{
+                    color: index === 0 ? '#1081cc' : 'text.primary',
+                    fontWeight: 600,
+                  }}
+                >
+                  {item.text}
+                </Typography>
+              </ListItemText>
             </ListItemButton>
           </ListItem>
         ))}
