@@ -5,6 +5,19 @@ import {
 } from '@mui/x-data-grid';
 import { Agreement } from '../../src/hooks/use-app';
 import { Stack } from '@mui/material';
+const getRoundedValue = (num: string) => {
+  const v = Number(num);
+  const lower = Math.floor(v);
+  const half = lower + 0.5;
+
+  if (v === half) {
+    return half;
+  } else if (v < half) {
+    return lower;
+  } else {
+    return Math.ceil(v);
+  }
+};
 
 const getMaterial = (_, v: Agreement) => {
   const [tilbud, montage, under] = [
@@ -12,11 +25,11 @@ const getMaterial = (_, v: Agreement) => {
     Number(v.Montage || 0),
     Number(v.Underleverandør || 0),
   ];
-  return ((tilbud - montage - under) * 0.25).toFixed(2);
+  return getRoundedValue(((tilbud - montage - under) * 0.25).toFixed(1));
 };
 const getEstimatedProjection = (_, v: Agreement) => {
   const [tilbud, montage] = [Number(v.Tilbud || 0), Number(v.Montage || 0)];
-  return (((tilbud - montage) * 0.1) / 830).toFixed(2);
+  return getRoundedValue((((tilbud - montage) * 0.1) / 830).toFixed(1));
 };
 const getEstimatedProduction = (_, v: Agreement) => {
   const [tilbud, montage, under, material, estimate] = [
@@ -26,49 +39,51 @@ const getEstimatedProduction = (_, v: Agreement) => {
     Number(v.Materialer || 0),
     Number(v.estimatedProjection || 0),
   ];
-  return ((tilbud - montage - under - material) / 750 - estimate).toFixed(2);
+  return getRoundedValue(
+    ((tilbud - montage - under - material) / 750 - estimate).toFixed(1)
+  );
 };
 const getEstimatedMontage = (_, v: Agreement) => {
   const [montage] = [Number(v.Montage || 0)];
-  return ((montage - montage * 0.08) / 630).toFixed(2);
+  return getRoundedValue(((montage - montage * 0.08) / 630).toFixed(1));
 };
 const getProjectionDiff = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedProjection || 0),
     Number(v.Real_Projektering_hr || 0),
   ];
-  return (estimate - real).toFixed(2);
+  return getRoundedValue((estimate - real).toFixed(1));
 };
 const getProductionDiff = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedProduction || 0),
     Number(v.Real_Svendetimer_hr || 0),
   ];
-  return (estimate - real).toFixed(2);
+  return getRoundedValue((estimate - real).toFixed(1));
 };
 const getEstimateDone = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedProduction || 0),
     Number(v.ny || 0),
   ];
-  return (estimate * real).toFixed(2);
+  return getRoundedValue((estimate * real).toFixed(1));
 };
 const getPlusMinus = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedProduction || 0),
     Number(v.estimateDone || 0),
   ];
-  return (real - estimate).toFixed(2);
+  return getRoundedValue((real - estimate).toFixed(1));
 };
 const getMontageDiff = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedMontage || 0),
     Number(v.Real_total_hr || 0),
   ];
-  return (estimate - real).toFixed(2);
+  return getRoundedValue((estimate - real).toFixed(1));
 };
 const getFinalMontage = (_, v: Agreement) => {
-  return (Number(v.Montage || 0) * 0.08).toFixed(2);
+  return getRoundedValue((Number(v.Montage || 0) * 0.08).toFixed(1));
 };
 const getTilbud = (_, row: Agreement) => {
   return row.Tilbud || '0';
