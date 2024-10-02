@@ -1,5 +1,10 @@
-import { GridColDef, GridColumnGroup } from '@mui/x-data-grid';
+import {
+  GridColDef,
+  GridColumnGroup,
+  GridRenderCellParams,
+} from '@mui/x-data-grid';
 import { Agreement } from '../../src/hooks/use-app';
+import { Stack } from '@mui/material';
 
 const getMaterial = (_, v: Agreement) => {
   const [tilbud, montage, under] = [
@@ -79,6 +84,24 @@ const getNy = (_, row: Agreement) => {
 };
 const getGammel = (_, row: Agreement) => {
   return row.gammel || '0';
+};
+const getColor = (v: string): string => {
+  const num = Number(v);
+  if (num >= 15) {
+    return 'green';
+  } else if (num < 15 && num > -10) {
+    return 'yellow';
+  } else {
+    return 'red';
+  }
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const renderCell = (params: GridRenderCellParams<any, string>) => {
+  return (
+    <Stack sx={{ backgroundColor: getColor(params.value) }}>
+      {params.value}
+    </Stack>
+  );
 };
 
 export const functionMap = {
@@ -239,6 +262,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    renderCell,
     valueGetter: getProjectionDiff,
   },
   {
@@ -295,6 +319,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    renderCell,
     valueGetter: getMontageDiff,
   },
   {
