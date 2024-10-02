@@ -15,7 +15,6 @@ import {
   setDoc,
   where,
   startAt,
-  Query,
   QueryConstraint,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
@@ -81,10 +80,12 @@ export const useApp = () => {
     };
   }
 
-  async function getAgreements(q: Query) {
+  async function getAgreements(q: QueryConstraint[]) {
     setLoading(true);
     try {
-      const snapShot = await getDocs(q);
+      const snapShot = await getDocs(
+        query(collection(db, 'agreements'), where('Tilbud', '>=', 40000), ...q)
+      );
       const arr: Agreement[] = snapShot.docs.map(processRow);
       setAgreements(arr);
     } catch (err) {
@@ -94,32 +95,38 @@ export const useApp = () => {
     }
   }
 
+  async function getAgreementTotalCount() {
+    const countQuery: QueryConstraint[] = [where('Tilbud', '>=', 40000)];
+    if (onlyDone) {
+      countQuery.push(where('done', '==', true));
+    }
+    try {
+      const snapShot = await getCountFromServer(
+        query(collection(db, 'agreements'), ...countQuery)
+      );
+      setCounts(snapShot.data().count);
+    } catch (err) {
+      console.error('Failed to get counts', err);
+    }
+  }
+
   useEffect(() => {
+    // setPaginationModal({ pageSize: paginationModal.pageSize, page: 0 });
+    getAgreementTotalCount();
     const arr: QueryConstraint[] = [
       orderBy('subject', 'asc'),
       limit(paginationModal.pageSize),
     ];
-    if (agreements.at(0)?.subject) {
-      arr.push(startAt(agreements.at(0)?.subject));
-    }
     if (onlyDone) {
       arr.push(where('done', '==', true));
     }
-    getAgreements(query(collection(db, 'agreements'), ...arr));
+    getAgreements(arr);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onlyDone]);
 
   useEffect(() => {
     async function getInitialAgreements() {
-      const countQuery: QueryConstraint[] = [];
-      if (onlyDone) {
-        countQuery.push(where('done', '==', true));
-      }
-      const snapShot = await getCountFromServer(
-        query(collection(db, 'agreements'), ...countQuery)
-      );
-      setCounts(snapShot.data().count);
-
       const arr: QueryConstraint[] = [
         orderBy('subject', 'asc'),
         limit(paginationModal.pageSize),
@@ -127,11 +134,12 @@ export const useApp = () => {
       if (onlyDone) {
         arr.push(where('done', '==', true));
       }
-      getAgreements(query(collection(db, 'agreements'), ...arr));
+      getAgreements(arr);
     }
+    getAgreementTotalCount();
     getInitialAgreements();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onlyDone]);
+  }, []);
 
   function customPagination(v: Pagination) {
     const arr: QueryConstraint[] = [orderBy('subject', 'asc')];
@@ -151,7 +159,7 @@ export const useApp = () => {
       }
       arr.push(limit(v.pageSize));
     }
-    getAgreements(query(collection(db, 'agreements'), ...arr));
+    getAgreements(arr);
     setPaginationModal(v);
   }
 
