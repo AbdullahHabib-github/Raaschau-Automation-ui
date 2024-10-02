@@ -175,7 +175,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'estimatedProjection',
-    headerName: 'projektering',
+    headerName: 'Projektering',
     headerAlign: 'right',
     align: 'right',
     minWidth: 120,
@@ -184,7 +184,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'estimatedProduction',
-    headerName: 'produktion',
+    headerName: 'Produktion',
     headerAlign: 'right',
     align: 'right',
     minWidth: 120,
@@ -193,7 +193,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'estimatedMontage',
-    headerName: 'montage',
+    headerName: 'Montage',
     headerAlign: 'right',
     align: 'right',
     minWidth: 120,
@@ -202,7 +202,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'Real_Projektering_hr',
-    headerName: 'projektering',
+    headerName: 'Projektering',
     minWidth: 120,
     maxWidth: 121,
     headerAlign: 'right',
@@ -210,7 +210,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'Real_Svendetimer_hr',
-    headerName: 'produktion',
+    headerName: 'Produktion',
     minWidth: 120,
     maxWidth: 121,
     headerAlign: 'right',
@@ -226,7 +226,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'Real_total_hr',
-    headerName: 'total',
+    headerName: 'Total',
     minWidth: 120,
     maxWidth: 121,
     headerAlign: 'right',
@@ -252,7 +252,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'ny',
-    headerName: 'Ny',
+    headerName: 'Denne uge',
     minWidth: 120,
     maxWidth: 121,
     headerAlign: 'right',
@@ -262,7 +262,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'gammel',
-    headerName: 'Gammel',
+    headerName: 'Sidste uge',
     minWidth: 120,
     maxWidth: 121,
     headerAlign: 'right',
@@ -273,8 +273,8 @@ export const columns: GridColDef[] = [
   {
     field: 'estimateDone',
     headerName: 'Est timer ift færdig %',
-    minWidth: 160,
-    maxWidth: 161,
+    minWidth: 170,
+    maxWidth: 171,
     headerAlign: 'right',
     align: 'right',
     valueGetter: getEstimateDone,
@@ -290,9 +290,9 @@ export const columns: GridColDef[] = [
   },
   {
     field: 'montageDiff',
-    headerName: 'Montage timer tilbage',
-    minWidth: 160,
-    maxWidth: 161,
+    headerName: 'timer tilbage',
+    minWidth: 120,
+    maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
     valueGetter: getMontageDiff,
@@ -311,7 +311,7 @@ export const columns: GridColDef[] = [
 export const columnGroup: GridColumnGroup[] = [
   {
     groupId: 'info',
-    headerName: 'Information',
+    headerName: 'Aftale info',
     children: [
       {
         field: 'appointmentNumber',
@@ -326,7 +326,7 @@ export const columnGroup: GridColumnGroup[] = [
   },
   {
     groupId: 'input',
-    headerName: 'Input',
+    headerName: 'Tilbud',
     children: [
       {
         field: 'Tilbud',
@@ -341,7 +341,7 @@ export const columnGroup: GridColumnGroup[] = [
   },
   {
     groupId: 'estimatedTill',
-    headerName: 'Est timer til',
+    headerName: 'Estimeret',
     children: [
       {
         field: 'Materialer',
@@ -359,7 +359,7 @@ export const columnGroup: GridColumnGroup[] = [
   },
   {
     groupId: 'timerBrugt',
-    headerName: 'Timer brugt',
+    headerName: 'Realiseret',
     children: [
       {
         field: 'Real_Projektering_hr',
@@ -377,38 +377,53 @@ export const columnGroup: GridColumnGroup[] = [
   },
   {
     groupId: 'timerTilbage',
-    headerName: 'timer tilbage',
+    headerName: 'Timer tilbage',
     children: [
       {
         field: 'projectionDiff',
       },
+      // {
+      //   field: 'productionDiff',
+      // },
+    ],
+  },
+  // {
+  //   groupId: 'ex montage',
+  //   headerName: 'Færdig ex montage %',
+  //   children: [
+  //     {
+  //       field: 'ny',
+  //     },
+  //     {
+  //       field: 'gammel',
+  //     },
+  //   ],
+  // },
+  {
+    groupId: 'productionStadie',
+    headerName: 'Produktion Stadie',
+    children: [
       {
         field: 'productionDiff',
       },
-    ],
-  },
-  {
-    groupId: 'ex montage',
-    headerName: 'Færdig ex montage %',
-    children: [
       {
         field: 'ny',
       },
       {
         field: 'gammel',
       },
-    ],
-  },
-  {
-    groupId: 'calculated',
-    headerName: 'Calculated',
-    children: [
       {
         field: 'estimateDone',
       },
       {
         field: 'plusMinus',
       },
+    ],
+  },
+  {
+    groupId: 'montage',
+    headerName: 'Montage',
+    children: [
       {
         field: 'montageDiff',
       },
