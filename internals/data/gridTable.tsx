@@ -159,18 +159,21 @@ export const columns: GridColDef[] = [
     align: 'right',
     minWidth: 60,
     maxWidth: 61,
+    hideSortIcons: true,
   },
   {
     field: 'subject',
     headerName: 'Subject',
     minWidth: 350,
     maxWidth: 351,
+    hideSortIcons: true,
   },
   {
     field: 'AgreementManager',
     headerName: 'Ansvarlig',
     minWidth: 160,
     maxWidth: 161,
+    hideSortIcons: true,
   },
   {
     field: 'Tilbud',
@@ -181,6 +184,7 @@ export const columns: GridColDef[] = [
     maxWidth: 141,
     editable: true,
     valueGetter: getTilbud,
+    hideSortIcons: true,
   },
   {
     field: 'Montage',
@@ -191,6 +195,7 @@ export const columns: GridColDef[] = [
     maxWidth: 141,
     editable: true,
     valueGetter: getMontage,
+    hideSortIcons: true,
   },
   {
     field: 'Underleverandør',
@@ -201,6 +206,7 @@ export const columns: GridColDef[] = [
     maxWidth: 131,
     editable: true,
     valueGetter: getUnderleverandør,
+    hideSortIcons: true,
   },
   {
     field: 'Materialer',
@@ -210,6 +216,7 @@ export const columns: GridColDef[] = [
     minWidth: 120,
     maxWidth: 121,
     valueGetter: getMaterial,
+    hideSortIcons: true,
   },
   {
     field: 'estimatedProjection',
@@ -219,6 +226,7 @@ export const columns: GridColDef[] = [
     minWidth: 120,
     maxWidth: 121,
     valueGetter: getEstimatedProjection,
+    hideSortIcons: true,
   },
   {
     field: 'estimatedProduction',
@@ -228,6 +236,7 @@ export const columns: GridColDef[] = [
     minWidth: 120,
     maxWidth: 121,
     valueGetter: getEstimatedProduction,
+    hideSortIcons: true,
   },
   {
     field: 'estimatedMontage',
@@ -237,6 +246,7 @@ export const columns: GridColDef[] = [
     minWidth: 120,
     maxWidth: 121,
     valueGetter: getEstimatedMontage,
+    hideSortIcons: true,
   },
   {
     field: 'Real_Projektering_hr',
@@ -245,6 +255,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    hideSortIcons: true,
   },
   {
     field: 'Real_Svendetimer_hr',
@@ -253,6 +264,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    hideSortIcons: true,
   },
   {
     field: 'Real_Montagetimer_hr',
@@ -261,6 +273,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    hideSortIcons: true,
   },
   {
     field: 'Real_total_hr',
@@ -269,6 +282,7 @@ export const columns: GridColDef[] = [
     maxWidth: 121,
     headerAlign: 'right',
     align: 'right',
+    hideSortIcons: true,
   },
   {
     field: 'projectionDiff',
@@ -279,6 +293,7 @@ export const columns: GridColDef[] = [
     align: 'right',
     renderCell,
     valueGetter: getProjectionDiff,
+    hideSortIcons: true,
   },
   {
     field: 'productionDiff',
@@ -288,26 +303,29 @@ export const columns: GridColDef[] = [
     headerAlign: 'right',
     align: 'right',
     valueGetter: getProductionDiff,
+    hideSortIcons: true,
   },
   {
     field: 'ny',
-    headerName: 'Denne uge',
-    minWidth: 120,
-    maxWidth: 121,
+    headerName: 'Færdig% ex. montage nu',
+    minWidth: 200,
+    maxWidth: 201,
     headerAlign: 'right',
     align: 'right',
     editable: true,
     valueGetter: getNy,
+    hideSortIcons: true,
   },
   {
     field: 'gammel',
-    headerName: 'Sidste uge',
-    minWidth: 120,
-    maxWidth: 121,
+    headerName: 'Færdig% ex. montage før',
+    minWidth: 200,
+    maxWidth: 201,
     headerAlign: 'right',
     align: 'right',
     editable: true,
     valueGetter: getGammel,
+    hideSortIcons: true,
   },
   {
     field: 'estimateDone',
@@ -317,6 +335,7 @@ export const columns: GridColDef[] = [
     headerAlign: 'right',
     align: 'right',
     valueGetter: getEstimateDone,
+    hideSortIcons: true,
   },
   {
     field: 'plusMinus',
@@ -326,6 +345,7 @@ export const columns: GridColDef[] = [
     headerAlign: 'right',
     align: 'right',
     valueGetter: getPlusMinus,
+    hideSortIcons: true,
   },
   {
     field: 'montageDiff',
@@ -336,6 +356,7 @@ export const columns: GridColDef[] = [
     align: 'right',
     renderCell,
     valueGetter: getMontageDiff,
+    hideSortIcons: true,
   },
   {
     field: 'finalMontage',
@@ -345,6 +366,7 @@ export const columns: GridColDef[] = [
     headerAlign: 'right',
     align: 'right',
     valueGetter: getFinalMontage,
+    hideSortIcons: true,
   },
 ];
 
