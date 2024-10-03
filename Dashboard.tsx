@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppNavbar from './components/AppNavbar';
-import Header from './components/Header';
 import MainGrid from './components/MainGrid';
 // import SideMenu from './components/SideMenu';
 
@@ -30,12 +29,13 @@ export default function Dashboard() {
             spacing={2}
             sx={{
               alignItems: 'center',
+              pt: 2,
               mx: 3,
               pb: 10,
               mt: { xs: 8 },
             }}
           >
-            <Header />
+            {/* <Header /> */}
             <MainGrid />
           </Stack>
         </Box>

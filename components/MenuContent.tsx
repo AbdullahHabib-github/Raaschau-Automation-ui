@@ -42,7 +42,7 @@ export default function MenuContent() {
               [`& .${listItemButtonClasses.root}`]: {
                 pt: '12px',
                 pb: '12px',
-                pr: '110px',
+                pr: '90px',
                 pl: '30px',
                 borderTopRightRadius: '60px',
                 borderBottomRightRadius: '60px',
@@ -64,6 +64,7 @@ export default function MenuContent() {
                   sx={{
                     color: index === 0 ? '#1081cc' : 'text.primary',
                     fontWeight: 600,
+                    letterSpacing: '0px',
                   }}
                 >
                   {item.text}
