@@ -84,7 +84,12 @@ export const useApp = () => {
     setLoading(true);
     try {
       const snapShot = await getDocs(
-        query(collection(db, 'agreements'), where('Tilbud', '>=', 40000), ...q)
+        query(
+          collection(db, 'agreements'),
+          where('Tilbud', '>=', 40000),
+          orderBy('Tilbud', 'desc'),
+          ...q
+        )
       );
       const arr: Agreement[] = snapShot.docs.map(processRow);
       setAgreements(arr);
@@ -98,7 +103,7 @@ export const useApp = () => {
 
   const memoisedCount = useCallback(async () => {
     console.log('memoised call');
-    const q: QueryConstraint[] = [where('Tilbud', '>=', 40000)];
+    const q: QueryConstraint[] = [];
     if (onlyDone) {
       q.push(where('done', '==', true));
     }
@@ -107,13 +112,9 @@ export const useApp = () => {
         query(collection(db, 'agreements'), ...q)
       );
       console.log('DoneOnly is ', onlyDone, snapShot.data().count);
-      setPaginationModal((v) => ({ ...v, page: 0 }));
       setCounts(snapShot.data().count);
-      getAgreements([
-        ...q,
-        orderBy('subject', 'asc'),
-        limit(paginationModal.pageSize),
-      ]);
+      getAgreements([...q, limit(paginationModal.pageSize)]);
+      setPaginationModal((v) => ({ ...v, page: 0 }));
     } catch (err) {
       console.error('Failed to get counts', err);
     }
@@ -122,27 +123,26 @@ export const useApp = () => {
 
   useEffect(() => {
     memoisedCount();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memoisedCount]);
 
   function customPagination(v: Pagination) {
-    const arr: QueryConstraint[] = [orderBy('subject', 'asc')];
+    const arr: QueryConstraint[] = [];
     if (onlyDone) {
       arr.push(where('done', '==', true));
     }
 
     if (paginationModal.page < v.page) {
       console.log('right pressed');
-      arr.push(startAfter(agreements.at(-1)?.subject));
+      arr.push(startAfter(agreements.at(-1)?.Tilbud));
       arr.push(limit(paginationModal.pageSize));
     } else if (paginationModal.page > v.page) {
       console.log('left pressed');
-      arr.push(endBefore(agreements.at(0)?.subject));
+      arr.push(endBefore(agreements.at(0)?.Tilbud));
       arr.push(limitToLast(paginationModal.pageSize));
     } else {
       console.log('size changed');
       if (agreements.at(0)?.subject) {
-        arr?.push(startAt(agreements.at(0).subject));
+        arr?.push(startAt(agreements.at(0).Tilbud));
       }
       arr.push(limit(v.pageSize));
     }
