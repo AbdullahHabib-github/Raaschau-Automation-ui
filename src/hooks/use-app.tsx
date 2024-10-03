@@ -107,13 +107,10 @@ export const useApp = () => {
   // refresh count and agreements and set the pagination to beginning
   const memoisedCount = useCallback(async () => {
     console.log('memoised call');
-    const q: QueryConstraint[] = [];
-    if (onlyDone) {
-      q.push(where('done', '==', true));
-    }
+    const q: QueryConstraint[] = [where('done', '==', onlyDone)];
     try {
       const snapShot = await getCountFromServer(
-        query(collection(db, 'agreements'), ...q)
+        query(collection(db, 'agreements'), where('Tilbud', '>=', 40000), ...q)
       );
       console.log('DoneOnly is ', onlyDone, snapShot.data().count);
       setCounts(snapShot.data().count);
@@ -132,10 +129,7 @@ export const useApp = () => {
 
   // when changing pagination
   function customPagination(v: Pagination) {
-    const arr: QueryConstraint[] = [];
-    if (onlyDone) {
-      arr.push(where('done', '==', true));
-    }
+    const arr: QueryConstraint[] = [where('done', '==', onlyDone)];
 
     if (paginationModal.page < v.page) {
       console.log('right pressed');
