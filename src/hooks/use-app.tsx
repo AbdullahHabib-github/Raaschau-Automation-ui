@@ -64,6 +64,7 @@ export const useApp = () => {
     pageSize: 10,
   });
 
+  // Used in getAgreements to process row
   function processRow(v: QueryDocumentSnapshot) {
     const data: Agreement = v.data() as Agreement;
 
@@ -80,6 +81,7 @@ export const useApp = () => {
     };
   }
 
+  // get agreements from DB, sorted and filtered default
   async function getAgreements(q: QueryConstraint[]) {
     setLoading(true);
     try {
@@ -101,6 +103,7 @@ export const useApp = () => {
     }
   }
 
+  // refresh count and agreements and set the pagination to beginning
   const memoisedCount = useCallback(async () => {
     console.log('memoised call');
     const q: QueryConstraint[] = [];
@@ -121,10 +124,12 @@ export const useApp = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onlyDone]);
 
+  // refresh on change in onlyDone state
   useEffect(() => {
     memoisedCount();
   }, [memoisedCount]);
 
+  // when changing pagination
   function customPagination(v: Pagination) {
     const arr: QueryConstraint[] = [];
     if (onlyDone) {

@@ -40,9 +40,9 @@ export default function CustomizedDataTable() {
         }}
         processRowUpdate={processRowUpdate}
         loading={loading}
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-        }
+        getRowClassName={(params) => {
+          return params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
+        }}
         initialState={{
           pagination: { paginationModel: paginationModal },
         }}
