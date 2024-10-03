@@ -10,3 +10,6 @@
 md-list-item.unhealthy {
   --md-list-item-trailing-icon-color: #ba1a1a;
 }
+.bluer {
+  color: #0070cc;
+}

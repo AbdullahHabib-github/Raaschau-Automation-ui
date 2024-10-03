@@ -103,11 +103,11 @@ const getGammel = (_, row: Agreement) => {
 const getColor = (v: string): string => {
   const num = Number(v);
   if (num >= 15) {
-    return 'green';
+    return 'rgba(0, 144, 0, 0.45)';
   } else if (num < 15 && num > -10) {
-    return 'yellow';
+    return 'rgba(255, 255, 0, 0.45)';
   } else {
-    return 'red';
+    return 'rgba(255, 0, 0, 0.45)';
   }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

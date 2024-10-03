@@ -78,6 +78,7 @@ export const useApp = () => {
       ...data,
       ...calculatedFields,
       id: v.id,
+      updated: false,
     };
   }
 
@@ -170,12 +171,17 @@ export const useApp = () => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function processRowUpdate(updatedRow: Agreement, _originalRow: Agreement) {
     const calculatedFields = {};
+    let updated = false;
 
     Object.keys(functionMap).forEach((k) => {
-      calculatedFields[k] = functionMap[k](undefined, updatedRow);
+      const temp = functionMap[k](undefined, updatedRow);
+      calculatedFields[k] = temp;
+      if (_originalRow[k] != temp) {
+        updated = true;
+        // console.log('updated', _originalRow[k], temp, k);
+      }
     });
 
     const data = {
@@ -183,8 +189,11 @@ export const useApp = () => {
       ...calculatedFields,
     };
     updateRecord(data);
-
-    return data;
+    const nn = {
+      ...data,
+      updated,
+    };
+    return nn;
   }
 
   return {

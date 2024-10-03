@@ -41,7 +41,11 @@ export default function CustomizedDataTable() {
         processRowUpdate={processRowUpdate}
         loading={loading}
         getRowClassName={(params) => {
-          return params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd';
+          const list: string[] = [];
+          if (params.row.updated) list.push('bluer');
+          if (params.indexRelativeToCurrentPage % 2) list.push('odd');
+          else list.push('even');
+          return list.join(' ');
         }}
         initialState={{
           pagination: { paginationModel: paginationModal },
