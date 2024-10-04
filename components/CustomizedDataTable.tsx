@@ -37,8 +37,6 @@ export default function CustomizedDataTable() {
           onClick={() => (window.location.href = '/')}
           sx={{
             mb: 2,
-            color: onlyDone ? 'blue' : 'inherit',
-            border: onlyDone ? '1px solid blue' : 'none',
             p: 2,
             py: 1,
             fontWeight: 'bold',

@@ -4,7 +4,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import { Typography } from '@mui/material';
+import { ListItemButton, Typography } from '@mui/material';
 
 const mainListItems = [
   // { text: 'Home', icon: <HomeRoundedIcon /> },
