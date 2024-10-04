@@ -30,7 +30,13 @@ export default function SideMenuMobile({
           height: '100%',
         }}
       >
-        <Stack sx={{ flexGrow: 1, mt: 8 }}>
+        <Stack
+          sx={{
+            flexGrow: 1,
+            mt: 8,
+            minWidth: '240px',
+          }}
+        >
           <MenuContent />
           <Divider />
         </Stack>
