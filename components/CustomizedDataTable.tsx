@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { columnGroup, columns } from '../internals/data/gridTable';
 import { useApp } from '../src/hooks/use-app';
-import { Chip } from '@mui/material';
+import { Box, Chip } from '@mui/material';
 import { Check } from 'lucide-react';
 
 export default function CustomizedDataTable() {
@@ -18,16 +18,33 @@ export default function CustomizedDataTable() {
 
   return (
     <>
-      <Chip
-        label='Show Done'
-        icon={<Check style={onlyDone ? { color: 'blue' } : {}} />}
-        onClick={() => setOnlyDone((d) => !d)}
-        style={{
-          marginBottom: 8,
-          border: onlyDone ? '1px solid blue' : 'none',
-          color: onlyDone ? 'blue' : 'inherit',
-        }}
-      />
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        <Chip
+          label='Afsluttede'
+          icon={<Check style={onlyDone ? { color: 'blue' } : {}} />}
+          onClick={() => setOnlyDone((d) => !d)}
+          sx={{
+            mb: 2,
+            color: onlyDone ? 'blue' : 'inherit',
+            border: onlyDone ? '1px solid blue' : 'none',
+            p: 2,
+            py: 1,
+            fontWeight: 'bold',
+          }}
+        />
+        <Chip
+          label='Opdater data'
+          onClick={() => (window.location.href = '/')}
+          sx={{
+            mb: 2,
+            color: onlyDone ? 'blue' : 'inherit',
+            border: onlyDone ? '1px solid blue' : 'none',
+            p: 2,
+            py: 1,
+            fontWeight: 'bold',
+          }}
+        />
+      </Box>
       <DataGrid
         paginationMode='server'
         autoHeight
