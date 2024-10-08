@@ -14,6 +14,7 @@ export default function CustomizedDataTable() {
     processRowUpdate,
     onlyDone,
     setOnlyDone,
+    updateData,
   } = useApp();
 
   return (
@@ -34,7 +35,7 @@ export default function CustomizedDataTable() {
         />
         <Chip
           label='Opdater data'
-          onClick={() => (window.location.href = '/')}
+          onClick={updateData}
           sx={{
             mb: 2,
             p: 2,

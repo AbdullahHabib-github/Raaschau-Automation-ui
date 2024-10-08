@@ -82,6 +82,14 @@ export const useApp = () => {
     };
   }
 
+  function updateData() {
+    fetch('https://6uh7v1.buildship.run/automation2')
+      .then(() => console.log('api called to refresh'))
+      .catch((err) => {
+        console.log('error failed to call refresh', err);
+      });
+  }
+
   // get agreements from DB, sorted and filtered default
   async function getAgreements(q: QueryConstraint[]) {
     setLoading(true);
@@ -199,5 +207,6 @@ export const useApp = () => {
     processRowUpdate,
     onlyDone,
     setOnlyDone,
+    updateData,
   };
 };
