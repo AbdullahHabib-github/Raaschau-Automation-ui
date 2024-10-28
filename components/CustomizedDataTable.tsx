@@ -1,8 +1,8 @@
-import { DataGrid } from '@mui/x-data-grid';
-import { columnGroup, columns } from '../internals/data/gridTable';
-import { useApp } from '../src/hooks/use-app';
-import { Box, Chip } from '@mui/material';
-import { Check } from 'lucide-react';
+import { DataGrid } from "@mui/x-data-grid";
+import { columnGroup, columns } from "../internals/data/gridTable";
+import { useApp } from "../src/hooks/use-app";
+import { Box, Chip } from "@mui/material";
+import { Check } from "lucide-react";
 
 export default function CustomizedDataTable() {
   const {
@@ -17,35 +17,36 @@ export default function CustomizedDataTable() {
     updateData,
   } = useApp();
 
+  console.log(agreements);
   return (
     <>
-      <Box sx={{ display: 'flex', gap: 1 }}>
+      <Box sx={{ display: "flex", gap: 1 }}>
         <Chip
-          label='Afsluttede'
-          icon={<Check style={onlyDone ? { color: 'blue' } : {}} />}
+          label="Afsluttede"
+          icon={<Check style={onlyDone ? { color: "blue" } : {}} />}
           onClick={() => setOnlyDone((d) => !d)}
           sx={{
             mb: 2,
-            color: onlyDone ? 'blue' : 'inherit',
-            border: onlyDone ? '1px solid blue' : 'none',
+            color: onlyDone ? "blue" : "inherit",
+            border: onlyDone ? "1px solid blue" : "none",
             p: 2,
             py: 1,
-            fontWeight: 'bold',
+            fontWeight: "bold",
           }}
         />
         <Chip
-          label='Opdater data'
+          label="Opdater data"
           onClick={updateData}
           sx={{
             mb: 2,
             p: 2,
             py: 1,
-            fontWeight: 'bold',
+            fontWeight: "bold",
           }}
         />
       </Box>
       <DataGrid
-        paginationMode='server'
+        paginationMode="server"
         autoHeight
         rows={agreements}
         rowCount={counts}
@@ -58,17 +59,17 @@ export default function CustomizedDataTable() {
         loading={loading}
         getRowClassName={(params) => {
           const list: string[] = [];
-          if (params.row.updated) list.push('bluer');
-          if (params.indexRelativeToCurrentPage % 2) list.push('odd');
-          else list.push('even');
-          return list.join(' ');
+          if (params.row.updated) list.push("bluer");
+          if (params.indexRelativeToCurrentPage % 2) list.push("odd");
+          else list.push("even");
+          return list.join(" ");
         }}
         initialState={{
           pagination: { paginationModel: paginationModal },
         }}
         onPaginationModelChange={setPaginationModal}
         pageSizeOptions={[10, 20, 50]}
-        density='compact'
+        density="compact"
       />
     </>
   );
