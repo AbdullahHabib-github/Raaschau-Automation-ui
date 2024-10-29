@@ -6,7 +6,6 @@ import {
 import { Agreement } from "../../src/hooks/use-app";
 import { Stack } from "@mui/material";
 const numberWithCommas = (x) => {
-  console.log(x);
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 const getRoundedValue = (num: string) => {
@@ -25,27 +24,37 @@ const getRoundedValue = (num: string) => {
 
 const getMaterial = (_, v: Agreement) => {
   const [tilbud, montage, under] = [
-    Number(v.Tilbud || 0),
+    // Number(v.Tilbud || 0),
+    Number(v.Tilbud.toString().replace(/,/g, "") || 0),
     Number(v.Montage || 0),
     Number(v.Underleverandør || 0),
   ];
-  return getRoundedValue(((tilbud - montage - under) * 0.25).toFixed(0));
+  let value = getRoundedValue(((tilbud - montage - under) * 0.25).toFixed(0));
+  value = numberWithCommas(value);
+  return value;
 };
 const getEstimatedProjection = (_, v: Agreement) => {
-  const [tilbud, montage] = [Number(v.Tilbud || 0), Number(v.Montage || 0)];
-  return getRoundedValue((((tilbud - montage) * 0.1) / 830).toFixed(1));
+  const [tilbud, montage] = [
+    Number(v.Tilbud.toString().replace(/,/g, "") || 0),
+    Number(v.Montage || 0),
+  ];
+  let value = getRoundedValue((((tilbud - montage) * 0.1) / 830).toFixed(1));
+  value = numberWithCommas(value);
+  return value;
 };
 const getEstimatedProduction = (_, v: Agreement) => {
   const [tilbud, montage, under, material, estimate] = [
-    Number(v.Tilbud || 0),
+    Number(v.Tilbud.toString().replace(/,/g, "") || 0),
     Number(v.Montage || 0),
     Number(v.Underleverandør || 0),
-    Number(v.Materialer || 0),
+    Number(v.Materialer.toString().replace(/,/g, "") || 0),
     Number(v.estimatedProjection || 0),
   ];
-  return getRoundedValue(
+  let value = getRoundedValue(
     ((tilbud - montage - under - material) / 750 - estimate).toFixed(1)
   );
+  value = numberWithCommas(value);
+  return value;
 };
 const getEstimatedMontage = (_, v: Agreement) => {
   const [montage] = [Number(v.Montage || 0)];
@@ -60,22 +69,24 @@ const getProjectionDiff = (_, v: Agreement) => {
 };
 const getProductionDiff = (_, v: Agreement) => {
   const [estimate, real] = [
-    Number(v.estimatedProduction || 0),
+    Number(v.estimatedProduction.toString().replace(/,/g, "") || 0),
     Number(v.Real_Svendetimer_hr || 0),
   ];
   return getRoundedValue((estimate - real).toFixed(1));
 };
 const getEstimateDone = (_, v: Agreement) => {
   const [estimate, real] = [
-    Number(v.estimatedProduction || 0),
+    Number(v.estimatedProduction.toString().replace(/,/g, "") || 0),
     Number(v.ny || 0),
   ];
-  return getRoundedValue((estimate * real).toFixed(1));
+  let value = getRoundedValue(((estimate * real) / 100).toFixed(1));
+  value = numberWithCommas(value);
+  return value;
 };
 const getPlusMinus = (_, v: Agreement) => {
   const [estimate, real] = [
-    Number(v.estimatedProduction || 0),
-    Number(v.estimateDone || 0),
+    Number(v.Real_Svendetimer_hr || 0),
+    Number(v.estimateDone.toString().replace(/,/g, "") || 0),
   ];
   let value = getRoundedValue((real - estimate).toFixed(1));
   value = numberWithCommas(value);
@@ -89,17 +100,13 @@ const getMontageDiff = (_, v: Agreement) => {
   return getRoundedValue((estimate - real).toFixed(1));
 };
 const getFinalMontage = (_, v: Agreement) => {
-  let value = getRoundedValue((Number(v.Montage || 0) * 0.08).toFixed(1));
-  value = numberWithCommas(value);
-  return value;
+  return getRoundedValue((Number(v.Montage || 0) * 0.08).toFixed(1));
 };
 const getTilbud = (_, row: Agreement) => {
-  const value = row.Tilbud || 0;
-  Number(value).toFixed(0);
-  value.toString();
-
+  const value = numberWithCommas(row.Tilbud) || 0;
   return value;
 };
+
 const getMontage = (_, row: Agreement) => {
   return row.Montage || "0";
 };
@@ -176,15 +183,15 @@ export const columns: GridColDef[] = [
   {
     field: "subject",
     headerName: "Subject",
-    minWidth: 350,
-    maxWidth: 351,
+    minWidth: 240,
+    maxWidth: 241,
     hideSortIcons: true,
   },
   {
     field: "AgreementManager",
     headerName: "Ansvarlig",
-    // minWidth: 160,
-    // maxWidth: 161,
+    minWidth: 80,
+    maxWidth: 81,
     hideSortIcons: true,
     valueGetter: (params) => {
       const name = (params as string) || "";
@@ -201,10 +208,15 @@ export const columns: GridColDef[] = [
     headerName: "Tilbud",
     headerAlign: "right",
     align: "right",
-    // minWidth: 140,
-    // maxWidth: 141,
+    minWidth: 140,
+    maxWidth: 141,
     editable: true,
-    valueGetter: getTilbud,
+    valueGetter: (parms) => {
+      if (parms !== "0") {
+        return parms + " DKK";
+      }
+      return parms;
+    },
     hideSortIcons: true,
   },
   {
@@ -215,7 +227,12 @@ export const columns: GridColDef[] = [
     // minWidth: 140,
     // maxWidth: 141,
     editable: true,
-    valueGetter: getMontage,
+    valueGetter: (parms) => {
+      if (parms !== "0") {
+        return parms + " DKK";
+      }
+      return parms;
+    },
     hideSortIcons: true,
   },
   {
@@ -226,7 +243,12 @@ export const columns: GridColDef[] = [
     minWidth: 130,
     maxWidth: 131,
     editable: true,
-    valueGetter: getUnderleverandør,
+    valueGetter: (parms) => {
+      if (parms !== "0") {
+        return parms + " DKK";
+      }
+      return parms;
+    },
     hideSortIcons: true,
   },
   {
@@ -234,9 +256,14 @@ export const columns: GridColDef[] = [
     headerName: "Materialer",
     headerAlign: "right",
     align: "right",
-    minWidth: 120,
-    maxWidth: 121,
-    valueGetter: getMaterial,
+    minWidth: 140,
+    maxWidth: 141,
+    valueGetter: (parms) => {
+      if (parms !== "0") {
+        return parms + " DKK";
+      }
+      return parms;
+    },
     hideSortIcons: true,
   },
   {
@@ -244,8 +271,8 @@ export const columns: GridColDef[] = [
     headerName: "Projektering",
     headerAlign: "right",
     align: "right",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 100,
+    maxWidth: 101,
     valueGetter: getEstimatedProjection,
     hideSortIcons: true,
   },
@@ -254,8 +281,8 @@ export const columns: GridColDef[] = [
     headerName: "Produktion",
     headerAlign: "right",
     align: "right",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 100,
+    maxWidth: 101,
     valueGetter: getEstimatedProduction,
     hideSortIcons: true,
   },
@@ -264,16 +291,16 @@ export const columns: GridColDef[] = [
     headerName: "Montage",
     headerAlign: "right",
     align: "right",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 80,
+    maxWidth: 81,
     valueGetter: getEstimatedMontage,
     hideSortIcons: true,
   },
   {
     field: "Real_Projektering_hr",
     headerName: "Projektering",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 100,
+    maxWidth: 101,
     headerAlign: "right",
     align: "right",
     hideSortIcons: true,
@@ -281,8 +308,8 @@ export const columns: GridColDef[] = [
   {
     field: "Real_Svendetimer_hr",
     headerName: "Produktion",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 90,
+    maxWidth: 91,
     headerAlign: "right",
     align: "right",
     hideSortIcons: true,
@@ -290,8 +317,8 @@ export const columns: GridColDef[] = [
   {
     field: "Real_Montagetimer_hr",
     headerName: "Montage",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 80,
+    maxWidth: 81,
     headerAlign: "right",
     align: "right",
     hideSortIcons: true,
@@ -299,8 +326,8 @@ export const columns: GridColDef[] = [
   {
     field: "Real_total_hr",
     headerName: "Total",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 80,
+    maxWidth: 81,
     headerAlign: "right",
     align: "right",
     hideSortIcons: true,
@@ -308,8 +335,8 @@ export const columns: GridColDef[] = [
   {
     field: "projectionDiff",
     headerName: "Projektering",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 100,
+    maxWidth: 101,
     headerAlign: "right",
     align: "right",
     renderCell,
@@ -319,8 +346,8 @@ export const columns: GridColDef[] = [
   {
     field: "productionDiff",
     headerName: "Produktion",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 90,
+    maxWidth: 91,
     headerAlign: "right",
     align: "right",
     valueGetter: getProductionDiff,
@@ -361,8 +388,8 @@ export const columns: GridColDef[] = [
   {
     field: "plusMinus",
     headerName: "+/- timer",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 90,
+    maxWidth: 100,
     headerAlign: "right",
     align: "right",
     renderCell,
@@ -372,8 +399,8 @@ export const columns: GridColDef[] = [
   {
     field: "montageDiff",
     headerName: "timer tilbage",
-    minWidth: 120,
-    maxWidth: 121,
+    minWidth: 99,
+    maxWidth: 100,
     headerAlign: "right",
     align: "right",
     renderCell,
@@ -383,11 +410,16 @@ export const columns: GridColDef[] = [
   {
     field: "finalMontage",
     headerName: "Afsat fragt",
-    minWidth: 140,
-    maxWidth: 141,
+    minWidth: 100,
+    maxWidth: 101,
     headerAlign: "right",
     align: "right",
-    valueGetter: getFinalMontage,
+    valueGetter: (parms) => {
+      if (parms !== 0) {
+        return parms + " DKK";
+      }
+      return parms;
+    },
     hideSortIcons: true,
   },
 ];

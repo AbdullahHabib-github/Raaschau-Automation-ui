@@ -46,6 +46,7 @@ export default function CustomizedDataTable() {
         />
       </Box>
       <DataGrid
+        className="table-responsive"
         paginationMode="server"
         autoHeight
         rows={agreements}

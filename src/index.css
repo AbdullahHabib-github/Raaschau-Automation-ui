@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.table-responsive .MuiDataGrid-virtualScroller--hasScrollX::-webkit-scrollbar,
+.table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar {
+  width: 20px;
+  border-radius: 10px;
+  height: 16px;
+}
+.table-responsive
+  .MuiDataGrid-virtualScroller--hasScrollX::-webkit-scrollbar-thumb,
+.table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgb(183, 181, 181);
+  border-radius: 10px;
+}
+.table-responsive
+  .MuiDataGrid-virtualScroller--hasScrollX::-webkit-scrollbar-track,
+.table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar-track {
+  background-color: rgb(234, 233, 233);
+  border-radius: 10px;
+}
