@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
   collection,
   getDocs,
@@ -16,12 +16,12 @@ import {
   where,
   startAt,
   QueryConstraint,
-} from 'firebase/firestore';
-import { db } from '../utils/firebase';
+} from "firebase/firestore";
+import { db } from "../utils/firebase";
 import {
   fieldToAddCollection,
   functionMap,
-} from '../../internals/data/gridTable';
+} from "../../internals/data/gridTable";
 
 export type Agreement = {
   id: string;
@@ -83,10 +83,10 @@ export const useApp = () => {
   }
 
   function updateData() {
-    fetch('https://6uh7v1.buildship.run/automation2')
-      .then(() => console.log('api called to refresh'))
+    fetch("https://6uh7v1.buildship.run/automation2")
+      .then(() => console.log("api called to refresh"))
       .catch((err) => {
-        console.log('error failed to call refresh', err);
+        console.log("error failed to call refresh", err);
       });
   }
 
@@ -96,16 +96,16 @@ export const useApp = () => {
     try {
       const snapShot = await getDocs(
         query(
-          collection(db, 'agreements'),
-          where('Tilbud', '>=', 40000),
-          orderBy('Tilbud', 'desc'),
+          collection(db, "agreements"),
+          where("Tilbud", ">=", 40000),
+          orderBy("Tilbud", "desc"),
           ...q
         )
       );
       const arr: Agreement[] = snapShot.docs.map(processRow);
       setAgreements(arr);
     } catch (err) {
-      console.log('oh no');
+      console.log("oh no");
       console.log(err);
     } finally {
       setLoading(false);
@@ -114,18 +114,18 @@ export const useApp = () => {
 
   // refresh count and agreements and set the pagination to beginning
   const memoisedCount = useCallback(async () => {
-    console.log('memoised call');
-    const q: QueryConstraint[] = [where('done', '==', onlyDone)];
+    console.log("memoised call");
+    const q: QueryConstraint[] = [where("done", "==", onlyDone)];
     try {
       const snapShot = await getCountFromServer(
-        query(collection(db, 'agreements'), where('Tilbud', '>=', 40000), ...q)
+        query(collection(db, "agreements"), where("Tilbud", ">=", 40000), ...q)
       );
-      console.log('DoneOnly is ', onlyDone, snapShot.data().count);
+      console.log("DoneOnly is ", onlyDone, snapShot.data().count);
       setCounts(snapShot.data().count);
       getAgreements([...q, limit(paginationModal.pageSize)]);
       setPaginationModal((v) => ({ ...v, page: 0 }));
     } catch (err) {
-      console.error('Failed to get counts', err);
+      console.error("Failed to get counts", err);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onlyDone]);
@@ -137,31 +137,32 @@ export const useApp = () => {
 
   // when changing pagination
   function customPagination(v: Pagination) {
-    const arr: QueryConstraint[] = [where('done', '==', onlyDone)];
+    const arr: QueryConstraint[] = [where("done", "==", onlyDone)];
 
     if (paginationModal.page < v.page) {
-      console.log('right pressed');
+      console.log("right pressed");
       arr.push(startAfter(agreements.at(-1)?.Tilbud));
       arr.push(limit(paginationModal.pageSize));
     } else if (paginationModal.page > v.page) {
-      console.log('left pressed');
+      console.log("left pressed");
+      arr.push(orderBy("Tilbud", "desc"));
       arr.push(endBefore(agreements.at(0)?.Tilbud));
       arr.push(limitToLast(paginationModal.pageSize));
     } else {
-      console.log('size changed');
+      console.log("size changed");
       if (agreements.at(0)?.subject) {
         arr?.push(startAt(agreements.at(0).Tilbud));
       }
       arr.push(limit(v.pageSize));
     }
     setPaginationModal({ ...v });
-    console.log('pagination model', v);
+    console.log("pagination model", v);
     getAgreements(arr);
   }
 
   async function updateRecord(temp: Agreement) {
     try {
-      const agreementDocRef = doc(db, 'agreements', temp.id);
+      const agreementDocRef = doc(db, "agreements", temp.id);
       const obj = {};
       fieldToAddCollection.forEach((v) => {
         obj[v] = temp[v];
@@ -169,7 +170,7 @@ export const useApp = () => {
       await setDoc(agreementDocRef, temp);
       await updateDoc(agreementDocRef, {});
     } catch (err) {
-      console.log('failed to update entry', err);
+      console.log("failed to update entry", err);
     }
   }
 
