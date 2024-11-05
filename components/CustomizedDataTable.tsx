@@ -17,7 +17,6 @@ export default function CustomizedDataTable() {
     updateData,
   } = useApp();
 
-  console.log(agreements);
   return (
     <>
       <Box sx={{ display: "flex", gap: 1 }}>

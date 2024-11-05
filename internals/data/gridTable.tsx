@@ -47,7 +47,7 @@ const getEstimatedProduction = (_, v: Agreement) => {
     Number(v.Tilbud.toString().replace(/,/g, "") || 0),
     Number(v.Montage || 0),
     Number(v.Underleverandør || 0),
-    Number(v.Materialer.toString().replace(/,/g, "") || 0),
+    Number(v.Materialer?.toString().replace(/,/g, "") || 0),
     Number(v.estimatedProjection || 0),
   ];
   let value = getRoundedValue(
@@ -69,14 +69,14 @@ const getProjectionDiff = (_, v: Agreement) => {
 };
 const getProductionDiff = (_, v: Agreement) => {
   const [estimate, real] = [
-    Number(v.estimatedProduction.toString().replace(/,/g, "") || 0),
+    Number(v.estimatedProduction?.toString().replace(/,/g, "") || 0),
     Number(v.Real_Svendetimer_hr || 0),
   ];
   return getRoundedValue((estimate - real).toFixed(1));
 };
 const getEstimateDone = (_, v: Agreement) => {
   const [estimate, real] = [
-    Number(v.estimatedProduction.toString().replace(/,/g, "") || 0),
+    Number(v.estimatedProduction?.toString().replace(/,/g, "") || 0),
     Number(v.ny || 0),
   ];
   let value = getRoundedValue(((estimate * real) / 100).toFixed(1));
@@ -86,7 +86,7 @@ const getEstimateDone = (_, v: Agreement) => {
 const getPlusMinus = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.Real_Svendetimer_hr || 0),
-    Number(v.estimateDone.toString().replace(/,/g, "") || 0),
+    Number(v.estimateDone?.toString().replace(/,/g, "") || 0),
   ];
   let value = getRoundedValue((real - estimate).toFixed(1));
   value = numberWithCommas(value);
