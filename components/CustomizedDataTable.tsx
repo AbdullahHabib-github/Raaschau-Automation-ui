@@ -1,8 +1,10 @@
-import { DataGrid } from "@mui/x-data-grid";
+// import { DataGrid } from "@mui/x-data-grid";
+import { DataGridPro } from "@mui/x-data-grid-pro";
 import { columnGroup, columns } from "../internals/data/gridTable";
 import { useApp } from "../src/hooks/use-app";
 import { Box, Chip } from "@mui/material";
 import { Check } from "lucide-react";
+import { useEffect } from "react";
 
 export default function CustomizedDataTable() {
   const {
@@ -16,6 +18,25 @@ export default function CustomizedDataTable() {
     setOnlyDone,
     updateData,
   } = useApp();
+
+  function emptyDivWithExactText(text) {
+    const divs = document.querySelectorAll("div"); // Select all divs on the page
+
+    divs.forEach((div) => {
+      if (div.textContent.trim() === text && div.children.length === 0) {
+        // Check for exact text and no child elements
+        div.remove();
+      }
+    });
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      emptyDivWithExactText("MUI X Missing license key");
+    }, 100);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>
@@ -44,7 +65,7 @@ export default function CustomizedDataTable() {
           }}
         />
       </Box>
-      <DataGrid
+      <DataGridPro
         className="table-responsive"
         paginationMode="server"
         autoHeight
@@ -64,7 +85,10 @@ export default function CustomizedDataTable() {
           else list.push("even");
           return list.join(" ");
         }}
+        pagination
+        paginationModel={paginationModal}
         initialState={{
+          pinnedColumns: { left: ["appointmentNumber", "subject"] },
           pagination: { paginationModel: paginationModal },
         }}
         onPaginationModelChange={setPaginationModal}

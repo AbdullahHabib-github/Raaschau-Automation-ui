@@ -179,6 +179,7 @@ export const columns: GridColDef[] = [
     minWidth: 60,
     maxWidth: 61,
     hideSortIcons: true,
+    pinnable: true,
   },
   {
     field: "subject",
@@ -186,6 +187,7 @@ export const columns: GridColDef[] = [
     minWidth: 240,
     maxWidth: 241,
     hideSortIcons: true,
+    pinnable: true,
   },
   {
     field: "AgreementManager",
