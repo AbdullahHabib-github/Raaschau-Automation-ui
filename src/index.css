@@ -20,3 +20,8 @@
   background-color: rgb(234, 233, 233);
   border-radius: 10px;
 }
+
+.table-responsive .MuiDataGrid-columnHeaderTitle {
+  text-overflow: unset;
+  text-wrap: auto;
+}

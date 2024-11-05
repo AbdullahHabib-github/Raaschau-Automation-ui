@@ -356,8 +356,8 @@ export const columns: GridColDef[] = [
   {
     field: "ny",
     headerName: "Færdig% ex. montage nu",
-    minWidth: 200,
-    maxWidth: 201,
+    minWidth: 100,
+    maxWidth: 101,
     headerAlign: "right",
     align: "right",
     editable: true,
@@ -367,8 +367,8 @@ export const columns: GridColDef[] = [
   {
     field: "gammel",
     headerName: "Færdig% ex. montage før",
-    minWidth: 200,
-    maxWidth: 201,
+    minWidth: 100,
+    maxWidth: 101,
     headerAlign: "right",
     align: "right",
     editable: true,
@@ -378,8 +378,8 @@ export const columns: GridColDef[] = [
   {
     field: "estimateDone",
     headerName: "Est timer ift færdig %",
-    minWidth: 170,
-    maxWidth: 171,
+    minWidth: 100,
+    maxWidth: 101,
     headerAlign: "right",
     align: "right",
     valueGetter: getEstimateDone,
@@ -399,8 +399,8 @@ export const columns: GridColDef[] = [
   {
     field: "montageDiff",
     headerName: "timer tilbage",
-    minWidth: 99,
-    maxWidth: 100,
+    minWidth: 89,
+    maxWidth: 90,
     headerAlign: "right",
     align: "right",
     renderCell,
@@ -410,8 +410,8 @@ export const columns: GridColDef[] = [
   {
     field: "finalMontage",
     headerName: "Afsat fragt",
-    minWidth: 100,
-    maxWidth: 101,
+    minWidth: 85,
+    maxWidth: 86,
     headerAlign: "right",
     align: "right",
     valueGetter: (parms) => {

@@ -70,6 +70,8 @@ export default function CustomizedDataTable() {
         onPaginationModelChange={setPaginationModal}
         pageSizeOptions={[10, 20, 50]}
         density="compact"
+        columnGroupHeaderHeight={50}
+        columnHeaderHeight={100}
       />
     </>
   );
