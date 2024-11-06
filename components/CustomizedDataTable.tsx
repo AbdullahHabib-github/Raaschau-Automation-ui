@@ -68,7 +68,6 @@ export default function CustomizedDataTable() {
       <DataGridPro
         className="table-responsive"
         paginationMode="server"
-        autoHeight
         rows={agreements}
         rowCount={counts}
         columns={columns}

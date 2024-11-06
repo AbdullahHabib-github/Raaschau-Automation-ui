@@ -25,3 +25,22 @@
   text-overflow: unset;
   text-wrap: auto;
 }
+
+.table-responsive .MuiDataGrid-virtualScroller {
+  overflow-y: scroll !important;
+  height: 350px !important;
+}
+
+.table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 0px;
+}
+
+.table-responsive .MuiDataGrid-scrollbar--vertical::-webkit-scrollbar-thumb {
+  border-radius: 0;
+}
+
+.table-responsive .MuiDataGrid-scrollbar--vertical {
+  top: 105px !important;
+  height: 225px !important;
+}
