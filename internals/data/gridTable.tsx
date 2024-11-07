@@ -95,7 +95,7 @@ const getPlusMinus = (_, v: Agreement) => {
 const getMontageDiff = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedMontage || 0),
-    Number(v.Real_total_hr || 0),
+    Number(v.Real_Montagetimer_hr || 0),
   ];
   return getRoundedValue((estimate - real).toFixed(1));
 };
@@ -536,15 +536,15 @@ export const columnGroup: GridColumnGroup[] = [
       {
         field: "plusMinus",
       },
-      {
-        field: "montageDiff",
-      },
     ],
   },
   {
     groupId: "montage",
     headerName: "Montage",
     children: [
+      {
+        field: "montageDiff",
+      },
       {
         field: "finalMontage",
       },
