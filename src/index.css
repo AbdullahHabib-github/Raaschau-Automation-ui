@@ -5,8 +5,8 @@
 .table-responsive .MuiDataGrid-virtualScroller--hasScrollX::-webkit-scrollbar,
 .table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar {
   width: 20px;
-  border-radius: 10px;
-  height: 16px;
+  border-radius: 8px;
+  height: 12px;
 }
 .table-responsive
   .MuiDataGrid-virtualScroller--hasScrollX::-webkit-scrollbar-thumb,
@@ -17,7 +17,7 @@
 .table-responsive
   .MuiDataGrid-virtualScroller--hasScrollX::-webkit-scrollbar-track,
 .table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar-track {
-  background-color: rgb(234, 233, 233);
+  /* background-color: rgb(234, 233, 233); */
   border-radius: 10px;
 }
 
@@ -27,8 +27,8 @@
 }
 
 .table-responsive .MuiDataGrid-virtualScroller {
-  overflow-y: scroll !important;
-  height: 350px !important;
+  overflow-y: auto !important;
+  height: 365px !important;
 }
 
 .table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar {
@@ -37,7 +37,7 @@
 }
 
 .table-responsive .MuiDataGrid-scrollbar--vertical::-webkit-scrollbar-thumb {
-  border-radius: 0;
+  border-radius: 12px;
 }
 
 .table-responsive .MuiDataGrid-scrollbar--vertical {
