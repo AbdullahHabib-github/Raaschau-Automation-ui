@@ -6,6 +6,9 @@ import { Box, Chip } from "@mui/material";
 import { Check } from "lucide-react";
 import { useEffect, useRef } from "react";
 
+const minHeight = 576;
+const maxHeight = 655;
+
 export default function CustomizedDataTable() {
   const {
     loading,
@@ -40,36 +43,51 @@ export default function CustomizedDataTable() {
     return () => clearInterval(intervalId);
   }, []);
 
+  // useEffect(() => {
+  //   const handleMouseMove = (e) => {
+  //     if (gridRef.current) {
+  //       const virtualScroller = gridRef.current.querySelector(
+  //         ".MuiDataGrid-virtualScroller"
+  //       );
+
+  //       if (virtualScroller) {
+  //         const rect = virtualScroller.getBoundingClientRect();
+  //         const scrollSpeed = 90;
+  //         const edgeThreshold = 150;
+  //         const edgeThresholdY = 60;
+
+  //         if (e.clientX < rect.left + edgeThreshold) {
+  //           virtualScroller.scrollLeft -= scrollSpeed;
+  //         } else if (e.clientX > rect.right - edgeThreshold) {
+  //           virtualScroller.scrollLeft += scrollSpeed;
+  //         }
+
+  //         if (e.clientY < rect.top + edgeThresholdY) {
+  //           virtualScroller.scrollTop -= scrollSpeed;
+  //         } else if (e.clientY > rect.bottom - edgeThresholdY) {
+  //           virtualScroller.scrollTop += scrollSpeed;
+  //         }
+  //       }
+  //     }
+  //   };
+
+  //   window.addEventListener("mousemove", handleMouseMove);
+
+  //   return () => window.removeEventListener("mousemove", handleMouseMove);
+  // }, []);
+
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (gridRef.current) {
-        const virtualScroller = gridRef.current.querySelector(
-          ".MuiDataGrid-virtualScroller"
+    const handleScroll = () => {
+      const top = window.scrollY;
+      console.log(top);
+      if (top > 99) {
+        const hederSticky = gridRef.current.querySelector(
+          ".MuiDataGrid-topContainer"
         );
-
-        if (virtualScroller) {
-          const rect = virtualScroller.getBoundingClientRect();
-          const scrollSpeed = 120;
-          const edgeThreshold = 90;
-
-          if (e.clientX < rect.left + edgeThreshold) {
-            virtualScroller.scrollLeft -= scrollSpeed;
-          } else if (e.clientX > rect.right - edgeThreshold) {
-            virtualScroller.scrollLeft += scrollSpeed;
-          }
-
-          if (e.clientY < rect.top + edgeThreshold) {
-            virtualScroller.scrollTop -= scrollSpeed;
-          } else if (e.clientY > rect.bottom - edgeThreshold) {
-            virtualScroller.scrollTop += scrollSpeed;
-          }
-        }
+        console.log(hederSticky);
       }
     };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -99,38 +117,47 @@ export default function CustomizedDataTable() {
           }}
         />
       </Box>
-      <DataGridPro
-        ref={gridRef}
-        className="table-responsive"
-        paginationMode="server"
-        rows={agreements}
-        rowCount={counts}
-        columns={columns}
-        columnGroupingModel={columnGroup}
-        onProcessRowUpdateError={(err) => {
-          console.log(err);
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          maxHeight,
+          minHeight,
         }}
-        processRowUpdate={processRowUpdate}
-        loading={loading}
-        getRowClassName={(params) => {
-          const list: string[] = [];
-          if (params.row.updated) list.push("bluer");
-          if (params.indexRelativeToCurrentPage % 2) list.push("odd");
-          else list.push("even");
-          return list.join(" ");
-        }}
-        pagination
-        paginationModel={paginationModal}
-        initialState={{
-          pinnedColumns: { left: ["appointmentNumber", "subject"] },
-          pagination: { paginationModel: paginationModal },
-        }}
-        onPaginationModelChange={setPaginationModal}
-        pageSizeOptions={[10, 20, 50]}
-        density="compact"
-        columnGroupHeaderHeight={50}
-        columnHeaderHeight={100}
-      />
+      >
+        <DataGridPro
+          ref={gridRef}
+          className="table-responsive"
+          paginationMode="server"
+          rows={agreements}
+          rowCount={counts}
+          columns={columns}
+          columnGroupingModel={columnGroup}
+          onProcessRowUpdateError={(err) => {
+            console.log(err);
+          }}
+          processRowUpdate={processRowUpdate}
+          loading={loading}
+          getRowClassName={(params) => {
+            const list: string[] = [];
+            if (params.row.updated) list.push("bluer");
+            if (params.indexRelativeToCurrentPage % 2) list.push("odd");
+            else list.push("even");
+            return list.join(" ");
+          }}
+          pagination
+          paginationModel={paginationModal}
+          initialState={{
+            pinnedColumns: { left: ["appointmentNumber", "subject"] },
+            pagination: { paginationModel: paginationModal },
+          }}
+          onPaginationModelChange={setPaginationModal}
+          pageSizeOptions={[10, 20, 50]}
+          density="compact"
+          columnGroupHeaderHeight={50}
+          columnHeaderHeight={100}
+        />
+      </div>
     </>
   );
 }

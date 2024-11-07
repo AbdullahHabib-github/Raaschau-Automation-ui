@@ -28,7 +28,7 @@
 
 .table-responsive .MuiDataGrid-virtualScroller {
   overflow-y: auto !important;
-  height: 365px !important;
+  /* height: 365px !important; */
 }
 
 .table-responsive .MuiDataGrid-scrollbar::-webkit-scrollbar {
@@ -40,7 +40,7 @@
   border-radius: 12px;
 }
 
-.table-responsive .MuiDataGrid-scrollbar--vertical {
+/* .table-responsive .MuiDataGrid-scrollbar--vertical {
   top: 105px !important;
   height: 225px !important;
-}
+} */
