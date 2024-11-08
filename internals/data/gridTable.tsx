@@ -141,6 +141,8 @@ const renderCell = (params: GridRenderCellParams<any, string>) => {
 export const functionMap = {
   Tilbud: getTilbud,
   Montage: getMontage,
+  Montage_First: getMontage,
+  Underleverandør_First: getUnderleverandør,
   Underleverandør: getUnderleverandør,
   Materialer: getMaterial,
   estimatedProjection: getEstimatedProjection,
@@ -222,6 +224,17 @@ export const columns: GridColDef[] = [
     hideSortIcons: true,
   },
   {
+    field: "Montage_First",
+    headerName: "Montage",
+    headerAlign: "right",
+    align: "right",
+    editable: false,
+    valueGetter: (parms) => {
+      return parms;
+    },
+    hideSortIcons: true,
+  },
+  {
     field: "Montage",
     headerName: "Montage",
     headerAlign: "right",
@@ -233,6 +246,19 @@ export const columns: GridColDef[] = [
       if (parms !== "0") {
         return parms + " DKK";
       }
+      return parms;
+    },
+    hideSortIcons: true,
+  },
+  {
+    field: "Underleverandør_First",
+    headerName: "Underleverandør",
+    headerAlign: "right",
+    align: "right",
+    minWidth: 130,
+    maxWidth: 131,
+    editable: true,
+    valueGetter: (parms) => {
       return parms;
     },
     hideSortIcons: true,
@@ -450,7 +476,13 @@ export const columnGroup: GridColumnGroup[] = [
         field: "Tilbud",
       },
       {
+        field: "Montage_First",
+      },
+      {
         field: "Montage",
+      },
+      {
+        field: "Underleverandør_First",
       },
       {
         field: "Underleverandør",
