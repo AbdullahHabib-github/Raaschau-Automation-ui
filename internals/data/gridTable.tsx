@@ -68,11 +68,13 @@ const getProjectionDiff = (_, v: Agreement) => {
   return getRoundedValue((estimate - real).toFixed(1));
 };
 const getProductionDiff = (_, v: Agreement) => {
-  const [estimate, real] = [
-    Number(v.estimatedProduction?.toString().replace(/,/g, "") || 0),
-    Number(v.Real_Svendetimer_hr || 0),
-  ];
-  return getRoundedValue((estimate - real).toFixed(1));
+  const estimatedProduction = getEstimatedProduction(_, v);
+  const realnew = Number(v.Real_Svendetimer_hr || 0);
+  // const [estimate, real] = [
+  //   Number(v.estimatedProduction?.toString().replace(/,/g, "") || 0),
+  //   Number(v.Real_Svendetimer_hr || 0),
+  // ];
+  return getRoundedValue((estimatedProduction - realnew).toFixed(1));
 };
 const getEstimateDone = (_, v: Agreement) => {
   const [estimate, real] = [
@@ -307,7 +309,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "estimatedProduction",
-    headerName: "Produktion",
+    headerName: "Timer Tilbage",
     headerAlign: "right",
     align: "right",
     minWidth: 100,
@@ -336,7 +338,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "Real_Svendetimer_hr",
-    headerName: "Produktion",
+    headerName: "Timer Tilbage",
     minWidth: 90,
     maxWidth: 91,
     headerAlign: "right",
@@ -374,7 +376,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "productionDiff",
-    headerName: "Produktion",
+    headerName: "Timer Tilbage",
     minWidth: 90,
     maxWidth: 91,
     headerAlign: "right",
