@@ -29,7 +29,6 @@ export default function CustomizedDataTable() {
 
     divs.forEach((div) => {
       if (div.textContent.trim() === text && div.children.length === 0) {
-        // Check for exact text and no child elements
         div.remove();
       }
     });

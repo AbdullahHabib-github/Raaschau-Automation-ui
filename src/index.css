@@ -40,7 +40,10 @@
   border-radius: 12px;
 }
 
-/* .table-responsive .MuiDataGrid-scrollbar--vertical {
-  top: 105px !important;
-  height: 225px !important;
-} */
+.table-responsive .MuiDataGrid-virtualScrollerRenderZone {
+  padding-bottom: 3em !important;
+}
+
+.table-responsive .MuiDataGrid-filler--pinnedLeft {
+  border-right: unset !important;
+}

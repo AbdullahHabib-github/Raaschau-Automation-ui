@@ -61,7 +61,7 @@ export const useApp = () => {
   const [agreements, setAgreements] = useState<Agreement[]>([]);
   const [paginationModal, setPaginationModal] = useState<Pagination>({
     page: 0,
-    pageSize: 10,
+    pageSize: 50,
   });
 
   // Used in getAgreements to process row

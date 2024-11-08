@@ -235,6 +235,19 @@ export const columns: GridColDef[] = [
     hideSortIcons: true,
   },
   {
+    field: "Underleverandør_First",
+    headerName: "Underleverandør",
+    headerAlign: "right",
+    align: "right",
+    minWidth: 130,
+    maxWidth: 131,
+    editable: true,
+    valueGetter: (parms) => {
+      return parms;
+    },
+    hideSortIcons: true,
+  },
+  {
     field: "Montage",
     headerName: "Montage",
     headerAlign: "right",
@@ -250,19 +263,7 @@ export const columns: GridColDef[] = [
     },
     hideSortIcons: true,
   },
-  {
-    field: "Underleverandør_First",
-    headerName: "Underleverandør",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 130,
-    maxWidth: 131,
-    editable: true,
-    valueGetter: (parms) => {
-      return parms;
-    },
-    hideSortIcons: true,
-  },
+
   {
     field: "Underleverandør",
     headerName: "Underleverandør",
