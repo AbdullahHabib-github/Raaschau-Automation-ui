@@ -97,7 +97,7 @@ export const useApp = () => {
       const snapShot = await getDocs(
         query(
           collection(db, "agreements"),
-          where("Tilbud", ">=", 40000),
+          // where("Tilbud", ">=", 40000),
           orderBy("Tilbud", "desc"),
           ...q
         )
@@ -117,8 +117,11 @@ export const useApp = () => {
     console.log("memoised call");
     const q: QueryConstraint[] = [where("done", "==", onlyDone)];
     try {
+      // const snapShot = await getCountFromServer(
+      //   query(collection(db, "agreements"), where("Tilbud", ">=", 40000), ...q)
+      // );
       const snapShot = await getCountFromServer(
-        query(collection(db, "agreements"), where("Tilbud", ">=", 40000), ...q)
+        query(collection(db, "agreements"), ...q)
       );
       console.log("DoneOnly is ", onlyDone, snapShot.data().count);
       setCounts(snapShot.data().count);
