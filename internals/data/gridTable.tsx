@@ -69,12 +69,15 @@ const getProjectionDiff = (_, v: Agreement) => {
 };
 const getProductionDiff = (_, v: Agreement) => {
   const estimatedProduction = getEstimatedProduction(_, v);
+  const estimateproductionNew = Number(
+    estimatedProduction?.toString().replace(/,/g, "") || 0
+  );
   const realnew = Number(v.Real_Svendetimer_hr || 0);
   // const [estimate, real] = [
   //   Number(v.estimatedProduction?.toString().replace(/,/g, "") || 0),
   //   Number(v.Real_Svendetimer_hr || 0),
   // ];
-  return getRoundedValue((estimatedProduction - realnew).toFixed(1));
+  return getRoundedValue((estimateproductionNew - realnew).toFixed(1));
 };
 const getEstimateDone = (_, v: Agreement) => {
   const [estimate, real] = [
