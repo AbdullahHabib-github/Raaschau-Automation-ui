@@ -4,13 +4,13 @@ import {
   DataGridPremium,
   GRID_ROW_GROUPING_SINGLE_GROUPING_FIELD,
   useKeepGroupedColumnsHidden,
+  useGridApiRef,
 } from "@mui/x-data-grid-premium";
 import { columnGroup, columns } from "../internals/data/gridTable";
 import { useApp } from "../src/hooks/use-app";
 import { Box, Chip } from "@mui/material";
 import { Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useGridApiRef } from "@mui/x-data-grid";
 
 const minHeight = 576;
 const maxHeight = 655;
