@@ -16,6 +16,7 @@
     "@mui/material": "^6.1.1",
     "@mui/x-charts": "^7.18.0",
     "@mui/x-data-grid": "^7.18.0",
+    "@mui/x-data-grid-premium": "^7.22.2",
     "@mui/x-data-grid-pro": "^7.22.1",
     "@mui/x-date-pickers": "^7.18.0",
     "@mui/x-tree-view": "^7.18.0",

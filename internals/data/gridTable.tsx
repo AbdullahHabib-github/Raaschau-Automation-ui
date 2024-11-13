@@ -25,7 +25,7 @@ const getRoundedValue = (num: string) => {
 const getMaterial = (_, v: Agreement) => {
   const [tilbud, montage, under] = [
     // Number(v.Tilbud || 0),
-    Number(v.Tilbud.toString().replace(/,/g, "") || 0),
+    Number(v.Tilbud?.toString().replace(/,/g, "") || 0),
     Number(v.Montage || 0),
     Number(v.Underleverandør || 0),
   ];
@@ -35,7 +35,7 @@ const getMaterial = (_, v: Agreement) => {
 };
 const getEstimatedProjection = (_, v: Agreement) => {
   const [tilbud, montage] = [
-    Number(v.Tilbud.toString().replace(/,/g, "") || 0),
+    Number(v.Tilbud?.toString().replace(/,/g, "") || 0),
     Number(v.Montage || 0),
   ];
   let value = getRoundedValue((((tilbud - montage) * 0.1) / 830).toFixed(1));
@@ -44,7 +44,7 @@ const getEstimatedProjection = (_, v: Agreement) => {
 };
 const getEstimatedProduction = (_, v: Agreement) => {
   const [tilbud, montage, under, material, estimate] = [
-    Number(v.Tilbud.toString().replace(/,/g, "") || 0),
+    Number(v.Tilbud?.toString().replace(/,/g, "") || 0),
     Number(v.Montage || 0),
     Number(v.Underleverandør || 0),
     Number(v.Materialer?.toString().replace(/,/g, "") || 0),
@@ -105,7 +105,10 @@ const getMontageDiff = (_, v: Agreement) => {
   return getRoundedValue((estimate - real).toFixed(1));
 };
 const getFinalMontage = (_, v: Agreement) => {
-  return getRoundedValue((Number(v.Montage || 0) * 0.08).toFixed(1));
+  const value = getRoundedValue((Number(v.Montage || 0) * 0.08).toFixed(1));
+  if (value !== 0) {
+    return value + " DKK";
+  } else return value;
 };
 const getTilbud = (_, row: Agreement) => {
   const value = numberWithCommas(row.Tilbud) || 0;
@@ -221,11 +224,16 @@ export const columns: GridColDef[] = [
     maxWidth: 141,
     editable: true,
     valueGetter: (parms) => {
-      if (parms !== "0") {
-        return parms + " DKK";
+      if (parms) {
+        if (parms !== "0") {
+          return parms + " DKK";
+        }
+        return parms;
+      } else {
+        return;
       }
-      return parms;
     },
+
     hideSortIcons: true,
   },
   {
@@ -261,10 +269,14 @@ export const columns: GridColDef[] = [
     // maxWidth: 141,
     editable: true,
     valueGetter: (parms) => {
-      if (parms !== "0") {
-        return parms + " DKK";
+      if (parms) {
+        if (parms !== "0") {
+          return parms + " DKK";
+        }
+        return parms;
+      } else {
+        return;
       }
-      return parms;
     },
     hideSortIcons: true,
   },
@@ -278,10 +290,14 @@ export const columns: GridColDef[] = [
     maxWidth: 131,
     editable: true,
     valueGetter: (parms) => {
-      if (parms !== "0") {
-        return parms + " DKK";
+      if (parms) {
+        if (parms !== "0") {
+          return parms + " DKK";
+        }
+        return parms;
+      } else {
+        return;
       }
-      return parms;
     },
     hideSortIcons: true,
   },
@@ -293,10 +309,14 @@ export const columns: GridColDef[] = [
     minWidth: 140,
     maxWidth: 141,
     valueGetter: (parms) => {
-      if (parms !== "0") {
-        return parms + " DKK";
+      if (parms) {
+        if (parms !== "0") {
+          return parms + " DKK";
+        }
+        return parms;
+      } else {
+        return;
       }
-      return parms;
     },
     hideSortIcons: true,
   },
@@ -448,12 +468,7 @@ export const columns: GridColDef[] = [
     maxWidth: 86,
     headerAlign: "right",
     align: "right",
-    valueGetter: (parms) => {
-      if (parms !== 0) {
-        return parms + " DKK";
-      }
-      return parms;
-    },
+    valueGetter: getFinalMontage,
     hideSortIcons: true,
   },
 ];

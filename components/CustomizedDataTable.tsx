@@ -1,10 +1,16 @@
 // import { DataGrid } from "@mui/x-data-grid";
-import { DataGridPro } from "@mui/x-data-grid-pro";
+// import { DataGridPro } from "@mui/x-data-grid-pro";
+import {
+  DataGridPremium,
+  GRID_ROW_GROUPING_SINGLE_GROUPING_FIELD,
+  useKeepGroupedColumnsHidden,
+} from "@mui/x-data-grid-premium";
 import { columnGroup, columns } from "../internals/data/gridTable";
 import { useApp } from "../src/hooks/use-app";
 import { Box, Chip } from "@mui/material";
 import { Check } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useGridApiRef } from "@mui/x-data-grid";
 
 const minHeight = 576;
 const maxHeight = 655;
@@ -22,25 +28,20 @@ export default function CustomizedDataTable() {
     updateData,
   } = useApp();
 
+  const apiRef = useGridApiRef();
+
   const gridRef = useRef(null);
-
-  function emptyDivWithExactText(text) {
-    const divs = document.querySelectorAll("div"); // Select all divs on the page
-
-    divs.forEach((div) => {
-      if (div.textContent.trim() === text && div.children.length === 0) {
-        div.remove();
-      }
-    });
-  }
+  const [aggrementsData, setAggrementsData] = useState([]);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      emptyDivWithExactText("MUI X Missing license key");
-    }, 100);
-
-    return () => clearInterval(intervalId);
-  }, []);
+    setAggrementsData(
+      agreements.map((e) => ({
+        ...e,
+        appointmentNumber1: e.appointmentNumber,
+        appointmentNumber: e.appointmentNumber.split("-")[0],
+      }))
+    );
+  }, [agreements]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -74,6 +75,39 @@ export default function CustomizedDataTable() {
 
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
+
+  function emptyDivWithExactText(text) {
+    const divs = document.querySelectorAll("div"); // Select all divs on the page
+
+    divs.forEach((div) => {
+      if (div.textContent.trim() === text && div.children.length === 0) {
+        div.remove();
+      }
+    });
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      emptyDivWithExactText("MUI X Missing license key");
+    }, 100);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const initialState = useKeepGroupedColumnsHidden({
+    apiRef,
+    initialState: {
+      columns: {
+        columnVisibilityModel: { day: false },
+      },
+      pinnedColumns: {
+        left: [GRID_ROW_GROUPING_SINGLE_GROUPING_FIELD, "subject"],
+      },
+      rowGrouping: {
+        model: ["appointmentNumber"],
+      },
+    },
+  });
 
   return (
     <>
@@ -110,17 +144,19 @@ export default function CustomizedDataTable() {
           minHeight,
         }}
       >
-        <DataGridPro
+        <DataGridPremium
+          apiRef={apiRef}
           ref={gridRef}
           className="table-responsive"
           paginationMode="server"
-          rows={agreements}
+          rows={aggrementsData}
           rowCount={counts}
           columns={columns}
           columnGroupingModel={columnGroup}
           onProcessRowUpdateError={(err) => {
             console.log(err);
           }}
+          getRowId={(row) => row.appointmentNumber + row.appointmentNumber1}
           processRowUpdate={processRowUpdate}
           loading={loading}
           getRowClassName={(params) => {
@@ -132,15 +168,17 @@ export default function CustomizedDataTable() {
           }}
           pagination
           paginationModel={paginationModal}
-          initialState={{
-            pinnedColumns: { left: ["appointmentNumber", "subject"] },
-            pagination: { paginationModel: paginationModal },
+          groupingColDef={{
+            leafField: "appointmentNumber",
           }}
+          defaultGroupingExpansionDepth={-1}
+          initialState={initialState}
           onPaginationModelChange={setPaginationModal}
           pageSizeOptions={[10, 20, 50]}
           density="compact"
           columnGroupHeaderHeight={50}
           columnHeaderHeight={100}
+          rowGroupingColumnMode="single"
         />
       </div>
     </>
