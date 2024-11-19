@@ -44,6 +44,13 @@ export default function CustomizedDataTable() {
   }, [agreements]);
 
   useEffect(() => {
+    const scrollData = {
+      deltaX: 0,
+      deltaY: 0,
+    };
+
+    let isScrolling = false;
+
     const handleMouseMove = (e) => {
       if (gridRef.current) {
         const virtualScroller = gridRef.current.querySelector(
@@ -52,29 +59,53 @@ export default function CustomizedDataTable() {
 
         if (virtualScroller) {
           const rect = virtualScroller.getBoundingClientRect();
-          const scrollSpeed = 90;
+          const scrollSpeed = 1;
           const edgeThreshold = 150;
-          const edgeThresholdY = 60;
+          const edgeThresholdY = 100;
 
-          if (e.clientX < rect.left + edgeThreshold) {
-            virtualScroller.scrollLeft -= scrollSpeed;
-          } else if (e.clientX > rect.right - edgeThreshold) {
-            virtualScroller.scrollLeft += scrollSpeed;
-          }
+          scrollData.deltaX =
+            e.clientX < rect.left + edgeThreshold
+              ? -scrollSpeed
+              : e.clientX > rect.right - edgeThreshold
+              ? scrollSpeed
+              : 0;
+          scrollData.deltaY =
+            e.clientY < rect.top + edgeThresholdY
+              ? -scrollSpeed
+              : e.clientY > rect.bottom - edgeThresholdY
+              ? scrollSpeed
+              : 0;
 
-          if (e.clientY < rect.top + edgeThresholdY) {
-            virtualScroller.scrollTop -= scrollSpeed;
-          } else if (e.clientY > rect.bottom - edgeThresholdY) {
-            virtualScroller.scrollTop += scrollSpeed;
+          if (
+            !isScrolling &&
+            (scrollData.deltaX !== 0 || scrollData.deltaY !== 0)
+          ) {
+            isScrolling = true;
+            smoothScroll(virtualScroller);
           }
         }
       }
     };
 
+    const smoothScroll = (scroller) => {
+      const performScroll = () => {
+        if (scrollData.deltaX !== 0 || scrollData.deltaY !== 0) {
+          scroller.scrollBy(scrollData.deltaX, scrollData.deltaY);
+          requestAnimationFrame(performScroll);
+        } else {
+          isScrolling = false;
+        }
+      };
+
+      performScroll();
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
 
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [gridRef]);
 
   function emptyDivWithExactText(text) {
     const divs = document.querySelectorAll("div"); // Select all divs on the page
