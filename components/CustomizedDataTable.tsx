@@ -43,37 +43,7 @@ export default function CustomizedDataTable() {
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (gridRef.current) {
-        const virtualScroller = gridRef.current.querySelector(
-          ".MuiDataGrid-virtualScroller"
-        );
-
-        if (virtualScroller) {
-          const rect = virtualScroller.getBoundingClientRect();
-          const scrollSpeed = 90;
-          const edgeThreshold = 150;
-          const edgeThresholdY = 60;
-
-          if (e.clientX < rect.left + edgeThreshold) {
-            virtualScroller.scrollLeft -= scrollSpeed;
-          } else if (e.clientX > rect.right - edgeThreshold) {
-            virtualScroller.scrollLeft += scrollSpeed;
-          }
-
-          if (e.clientY < rect.top + edgeThresholdY) {
-            virtualScroller.scrollTop -= scrollSpeed;
-          } else if (e.clientY > rect.bottom - edgeThresholdY) {
-            virtualScroller.scrollTop += scrollSpeed;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [gridRef]);
 
   return (
     <>
