@@ -5,6 +5,7 @@ import {
 } from "@mui/x-data-grid";
 import { Agreement } from "../../src/hooks/use-app";
 import { Stack } from "@mui/material";
+
 const numberWithCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
@@ -185,313 +186,315 @@ export const fieldToAddCollection = [
   "gammel",
 ];
 
-export const columns: GridColDef[] = [
-  {
-    field: "appointmentNumber",
-    headerName: "Nr",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 90,
-    valueGetter: (params, row) => {
-      return row.appointmentNumber1;
+export const columns = (data): GridColDef[] => {
+  console.log("data =============", data);
+
+  return [
+    {
+      field: "appointmentNumber",
+      headerName: "Nr",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 90,
+      valueGetter: (params, row) => {
+        return row.appointmentNumber1;
+      },
+      maxWidth: 91,
+      hideSortIcons: true,
+      pinnable: true,
     },
-    maxWidth: 91,
-    hideSortIcons: true,
-    pinnable: true,
-  },
-  {
-    field: "subject",
-    headerName: "Subject",
-    minWidth: 240,
-    maxWidth: 241,
-    valueGetter: (params) => {
-      if (params) {
-        return params;
-      } else {
-        return "Total";
-      }
-    },
-    hideSortIcons: true,
-    pinnable: true,
-  },
-  {
-    field: "AgreementManager",
-    headerName: "Ansvarlig",
-    minWidth: 80,
-    maxWidth: 81,
-    hideSortIcons: true,
-    valueGetter: (params) => {
-      if (params) {
-        const name = (params as string) || "";
-        const initials = name
-          .split(" ")
-          .map((n) => n[0])
-          .join("")
-          .toUpperCase();
-        return initials;
-      } else {
-        return "-";
-      }
-    },
-  },
-  {
-    field: "Tilbud",
-    headerName: "Tilbud",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 140,
-    maxWidth: 141,
-    editable: true,
-    valueGetter: (parms, row) => {
-      console.log(row);
-      if (parms) {
-        if (parms !== "0") {
-          return parms + " DKK";
+    {
+      field: "subject",
+      headerName: "Subject",
+      minWidth: 240,
+      maxWidth: 241,
+      valueGetter: (params) => {
+        if (params) {
+          return params;
+        } else {
+          return "Total";
         }
+      },
+      hideSortIcons: true,
+      pinnable: true,
+    },
+    {
+      field: "AgreementManager",
+      headerName: "Ansvarlig",
+      minWidth: 80,
+      maxWidth: 81,
+      hideSortIcons: true,
+      valueGetter: (params) => {
+        if (params) {
+          const name = (params as string) || "";
+          const initials = name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase();
+          return initials;
+        } else {
+          return "-";
+        }
+      },
+    },
+    {
+      field: "Tilbud",
+      headerName: "Tilbud",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 140,
+      maxWidth: 141,
+      editable: true,
+      valueGetter: (parms) => {
+        if (parms) {
+          if (parms !== "0") {
+            return parms + " DKK";
+          }
+          return parms;
+        } else {
+          return;
+        }
+      },
+      hideSortIcons: true,
+    },
+    {
+      field: "Montage_First",
+      headerName: "Montage",
+      headerAlign: "right",
+      align: "right",
+      editable: false,
+      valueGetter: (parms) => {
         return parms;
-      } else {
-        return;
-      }
+      },
+      hideSortIcons: true,
+    },
+    {
+      field: "Underleverandør_First",
+      headerName: "Underleverandør",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 130,
+      maxWidth: 131,
+      editable: true,
+      valueGetter: (parms) => {
+        return parms;
+      },
+      hideSortIcons: true,
+    },
+    {
+      field: "Montage",
+      headerName: "Montage",
+      headerAlign: "right",
+      align: "right",
+      // minWidth: 140,
+      // maxWidth: 141,
+      editable: true,
+      valueGetter: (parms) => {
+        if (parms) {
+          if (parms !== "0") {
+            return parms + " DKK";
+          }
+          return parms;
+        } else {
+          return;
+        }
+      },
+      hideSortIcons: true,
     },
 
-    hideSortIcons: true,
-  },
-  {
-    field: "Montage_First",
-    headerName: "Montage",
-    headerAlign: "right",
-    align: "right",
-    editable: false,
-    valueGetter: (parms) => {
-      return parms;
-    },
-    hideSortIcons: true,
-  },
-  {
-    field: "Underleverandør_First",
-    headerName: "Underleverandør",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 130,
-    maxWidth: 131,
-    editable: true,
-    valueGetter: (parms) => {
-      return parms;
-    },
-    hideSortIcons: true,
-  },
-  {
-    field: "Montage",
-    headerName: "Montage",
-    headerAlign: "right",
-    align: "right",
-    // minWidth: 140,
-    // maxWidth: 141,
-    editable: true,
-    valueGetter: (parms) => {
-      if (parms) {
-        if (parms !== "0") {
-          return parms + " DKK";
+    {
+      field: "Underleverandør",
+      headerName: "Underleverandør",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 130,
+      maxWidth: 131,
+      editable: true,
+      valueGetter: (parms) => {
+        if (parms) {
+          if (parms !== "0") {
+            return parms + " DKK";
+          }
+          return parms;
+        } else {
+          return;
         }
-        return parms;
-      } else {
-        return;
-      }
+      },
+      hideSortIcons: true,
     },
-    hideSortIcons: true,
-  },
-
-  {
-    field: "Underleverandør",
-    headerName: "Underleverandør",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 130,
-    maxWidth: 131,
-    editable: true,
-    valueGetter: (parms) => {
-      if (parms) {
-        if (parms !== "0") {
-          return parms + " DKK";
+    {
+      field: "Materialer",
+      headerName: "Materialer",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 140,
+      maxWidth: 141,
+      valueGetter: (parms) => {
+        if (parms) {
+          if (parms !== "0") {
+            return parms + " DKK";
+          }
+          return parms;
+        } else {
+          return;
         }
-        return parms;
-      } else {
-        return;
-      }
+      },
+      hideSortIcons: true,
     },
-    hideSortIcons: true,
-  },
-  {
-    field: "Materialer",
-    headerName: "Materialer",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 140,
-    maxWidth: 141,
-    valueGetter: (parms) => {
-      if (parms) {
-        if (parms !== "0") {
-          return parms + " DKK";
-        }
-        return parms;
-      } else {
-        return;
-      }
+    {
+      field: "estimatedProjection",
+      headerName: "Projektering",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 100,
+      maxWidth: 101,
+      valueGetter: getEstimatedProjection,
+      hideSortIcons: true,
     },
-    hideSortIcons: true,
-  },
-  {
-    field: "estimatedProjection",
-    headerName: "Projektering",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 100,
-    maxWidth: 101,
-    valueGetter: getEstimatedProjection,
-    hideSortIcons: true,
-  },
-  {
-    field: "estimatedProduction",
-    headerName: "Produktion",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 100,
-    maxWidth: 101,
-    valueGetter: getEstimatedProduction,
-    hideSortIcons: true,
-  },
-  {
-    field: "estimatedMontage",
-    headerName: "Montage",
-    headerAlign: "right",
-    align: "right",
-    minWidth: 80,
-    maxWidth: 81,
-    valueGetter: getEstimatedMontage,
-    hideSortIcons: true,
-  },
-  {
-    field: "Real_Projektering_hr",
-    headerName: "Projektering",
-    minWidth: 100,
-    maxWidth: 101,
-    headerAlign: "right",
-    align: "right",
-    hideSortIcons: true,
-  },
-  {
-    field: "Real_Svendetimer_hr",
-    headerName: "Produktion",
-    minWidth: 90,
-    maxWidth: 91,
-    headerAlign: "right",
-    align: "right",
-    hideSortIcons: true,
-  },
-  {
-    field: "Real_Montagetimer_hr",
-    headerName: "Montage",
-    minWidth: 80,
-    maxWidth: 81,
-    headerAlign: "right",
-    align: "right",
-    hideSortIcons: true,
-  },
-  {
-    field: "Real_total_hr",
-    headerName: "Total",
-    minWidth: 80,
-    maxWidth: 81,
-    headerAlign: "right",
-    align: "right",
-    hideSortIcons: true,
-  },
-  {
-    field: "projectionDiff",
-    headerName: "Projektering",
-    minWidth: 100,
-    maxWidth: 101,
-    headerAlign: "right",
-    align: "right",
-    renderCell,
-    valueGetter: getProjectionDiff,
-    hideSortIcons: true,
-  },
-  {
-    field: "productionDiff",
-    headerName: "Timer Tilbage",
-    minWidth: 90,
-    maxWidth: 91,
-    headerAlign: "right",
-    align: "right",
-    valueGetter: getProductionDiff,
-    hideSortIcons: true,
-  },
-  {
-    field: "ny",
-    headerName: "Færdig% ex. montage nu",
-    minWidth: 100,
-    maxWidth: 101,
-    headerAlign: "right",
-    align: "right",
-    editable: true,
-    valueGetter: getNy,
-    hideSortIcons: true,
-  },
-  {
-    field: "gammel",
-    headerName: "Færdig% ex. montage før",
-    minWidth: 100,
-    maxWidth: 101,
-    headerAlign: "right",
-    align: "right",
-    editable: true,
-    valueGetter: getGammel,
-    hideSortIcons: true,
-  },
-  {
-    field: "estimateDone",
-    headerName: "Est timer ift færdig %",
-    minWidth: 100,
-    maxWidth: 101,
-    headerAlign: "right",
-    align: "right",
-    valueGetter: getEstimateDone,
-    hideSortIcons: true,
-  },
-  {
-    field: "plusMinus",
-    headerName: "+/- timer",
-    minWidth: 90,
-    maxWidth: 100,
-    headerAlign: "right",
-    align: "right",
-    renderCell,
-    valueGetter: getPlusMinus,
-    hideSortIcons: true,
-  },
-  {
-    field: "montageDiff",
-    headerName: "timer tilbage",
-    minWidth: 89,
-    maxWidth: 90,
-    headerAlign: "right",
-    align: "right",
-    renderCell,
-    valueGetter: getMontageDiff,
-    hideSortIcons: true,
-  },
-  {
-    field: "finalMontage",
-    headerName: "Afsat fragt",
-    minWidth: 85,
-    maxWidth: 86,
-    headerAlign: "right",
-    align: "right",
-    valueGetter: getFinalMontage,
-    hideSortIcons: true,
-  },
-];
+    {
+      field: "estimatedProduction",
+      headerName: "Produktion",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 100,
+      maxWidth: 101,
+      valueGetter: getEstimatedProduction,
+      hideSortIcons: true,
+    },
+    {
+      field: "estimatedMontage",
+      headerName: "Montage",
+      headerAlign: "right",
+      align: "right",
+      minWidth: 80,
+      maxWidth: 81,
+      valueGetter: getEstimatedMontage,
+      hideSortIcons: true,
+    },
+    {
+      field: "Real_Projektering_hr",
+      headerName: "Projektering",
+      minWidth: 100,
+      maxWidth: 101,
+      headerAlign: "right",
+      align: "right",
+      hideSortIcons: true,
+    },
+    {
+      field: "Real_Svendetimer_hr",
+      headerName: "Produktion",
+      minWidth: 90,
+      maxWidth: 91,
+      headerAlign: "right",
+      align: "right",
+      hideSortIcons: true,
+    },
+    {
+      field: "Real_Montagetimer_hr",
+      headerName: "Montage",
+      minWidth: 80,
+      maxWidth: 81,
+      headerAlign: "right",
+      align: "right",
+      hideSortIcons: true,
+    },
+    {
+      field: "Real_total_hr",
+      headerName: "Total",
+      minWidth: 80,
+      maxWidth: 81,
+      headerAlign: "right",
+      align: "right",
+      hideSortIcons: true,
+    },
+    {
+      field: "projectionDiff",
+      headerName: "Projektering",
+      minWidth: 100,
+      maxWidth: 101,
+      headerAlign: "right",
+      align: "right",
+      renderCell,
+      valueGetter: getProjectionDiff,
+      hideSortIcons: true,
+    },
+    {
+      field: "productionDiff",
+      headerName: "Timer Tilbage",
+      minWidth: 90,
+      maxWidth: 91,
+      headerAlign: "right",
+      align: "right",
+      valueGetter: getProductionDiff,
+      hideSortIcons: true,
+    },
+    {
+      field: "ny",
+      headerName: "Færdig% ex. montage nu",
+      minWidth: 100,
+      maxWidth: 101,
+      headerAlign: "right",
+      align: "right",
+      editable: true,
+      valueGetter: getNy,
+      hideSortIcons: true,
+    },
+    {
+      field: "gammel",
+      headerName: "Færdig% ex. montage før",
+      minWidth: 100,
+      maxWidth: 101,
+      headerAlign: "right",
+      align: "right",
+      editable: true,
+      valueGetter: getGammel,
+      hideSortIcons: true,
+    },
+    {
+      field: "estimateDone",
+      headerName: "Est timer ift færdig %",
+      minWidth: 100,
+      maxWidth: 101,
+      headerAlign: "right",
+      align: "right",
+      valueGetter: getEstimateDone,
+      hideSortIcons: true,
+    },
+    {
+      field: "plusMinus",
+      headerName: "+/- timer",
+      minWidth: 90,
+      maxWidth: 100,
+      headerAlign: "right",
+      align: "right",
+      renderCell,
+      valueGetter: getPlusMinus,
+      hideSortIcons: true,
+    },
+    {
+      field: "montageDiff",
+      headerName: "timer tilbage",
+      minWidth: 89,
+      maxWidth: 90,
+      headerAlign: "right",
+      align: "right",
+      renderCell,
+      valueGetter: getMontageDiff,
+      hideSortIcons: true,
+    },
+    {
+      field: "finalMontage",
+      headerName: "Afsat fragt",
+      minWidth: 85,
+      maxWidth: 86,
+      headerAlign: "right",
+      align: "right",
+      valueGetter: getFinalMontage,
+      hideSortIcons: true,
+    },
+  ];
+};
 
 export const columnGroup: GridColumnGroup[] = [
   {
