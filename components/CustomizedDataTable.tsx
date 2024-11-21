@@ -33,6 +33,7 @@ export default function CustomizedDataTable() {
   const gridRef = useRef(null);
   const [aggrementsData, setAggrementsData] = useState([]);
 
+  //
   useEffect(() => {
     const countIds = {};
     let temp = agreements.map((e) => {
