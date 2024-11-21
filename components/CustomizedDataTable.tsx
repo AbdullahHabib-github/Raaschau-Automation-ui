@@ -83,41 +83,41 @@ export default function CustomizedDataTable() {
 
     let isScrolling = false;
 
-    // const handleMouseMove = (e) => {
-    //   if (gridRef.current) {
-    //     const virtualScroller = gridRef.current.querySelector(
-    //       ".MuiDataGrid-virtualScroller"
-    //     );
+    const handleMouseMove = (e) => {
+      if (gridRef.current) {
+        const virtualScroller = gridRef.current.querySelector(
+          ".MuiDataGrid-virtualScroller"
+        );
 
-    //     if (virtualScroller) {
-    //       const rect = virtualScroller.getBoundingClientRect();
-    //       const scrollSpeed = 1;
-    //       const edgeThreshold = 150;
-    //       const edgeThresholdY = 100;
+        if (virtualScroller) {
+          const rect = virtualScroller.getBoundingClientRect();
+          const scrollSpeed = 1;
+          const edgeThreshold = 150;
+          const edgeThresholdY = 100;
 
-    //       scrollData.deltaX =
-    //         e.clientX < rect.left + edgeThreshold
-    //           ? -scrollSpeed
-    //           : e.clientX > rect.right - edgeThreshold
-    //           ? scrollSpeed
-    //           : 0;
-    //       scrollData.deltaY =
-    //         e.clientY < rect.top + edgeThresholdY
-    //           ? -scrollSpeed
-    //           : e.clientY > rect.bottom - edgeThresholdY
-    //           ? scrollSpeed
-    //           : 0;
+          scrollData.deltaX =
+            e.clientX < rect.left + edgeThreshold
+              ? -scrollSpeed
+              : e.clientX > rect.right - edgeThreshold
+              ? scrollSpeed
+              : 0;
+          scrollData.deltaY =
+            e.clientY < rect.top + edgeThresholdY
+              ? -scrollSpeed
+              : e.clientY > rect.bottom - edgeThresholdY
+              ? scrollSpeed
+              : 0;
 
-    //       if (
-    //         !isScrolling &&
-    //         (scrollData.deltaX !== 0 || scrollData.deltaY !== 0)
-    //       ) {
-    //         isScrolling = true;
-    //         smoothScroll(virtualScroller);
-    //       }
-    //     }
-    //   }
-    // };
+          if (
+            !isScrolling &&
+            (scrollData.deltaX !== 0 || scrollData.deltaY !== 0)
+          ) {
+            isScrolling = true;
+            smoothScroll(virtualScroller);
+          }
+        }
+      }
+    };
 
     const smoothScroll = (scroller) => {
       const performScroll = () => {
@@ -132,11 +132,11 @@ export default function CustomizedDataTable() {
       performScroll();
     };
 
-    // window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
-    // return () => {
-    //   window.removeEventListener("mousemove", handleMouseMove);
-    // };
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, [gridRef]);
 
   function emptyDivWithExactText(text) {
