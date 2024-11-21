@@ -34,13 +34,45 @@ export default function CustomizedDataTable() {
   const [aggrementsData, setAggrementsData] = useState([]);
 
   useEffect(() => {
-    setAggrementsData(
-      agreements.map((e) => ({
+    const countIds = {};
+    let temp = agreements.map((e) => {
+      const id = e.appointmentNumber.split("-")[0];
+      if (!countIds[id]) {
+        countIds[id] = 1;
+      } else {
+        countIds[id] = countIds[id] + 1;
+      }
+      return {
         ...e,
         appointmentNumber1: e.appointmentNumber,
-        appointmentNumber: e.appointmentNumber.split("-")[0],
-      }))
-    );
+        appointmentNumber: id,
+      };
+    });
+
+    temp = temp.map((e) => {
+      const id = e.appointmentNumber.split("-")[0];
+      if (countIds[id] === 1) {
+        delete e.appointmentNumber;
+      }
+      return e;
+    });
+
+    temp.sort((a, b) => {
+      const [baseA, suffixA] = a.appointmentNumber1.split("-");
+      const [baseB, suffixB] = b.appointmentNumber1.split("-");
+      const numA = parseInt(baseA, 10);
+      const numB = parseInt(baseB, 10);
+
+      if (numA !== numB) return numA - numB;
+
+      if (suffixA && suffixB)
+        return parseInt(suffixA, 10) - parseInt(suffixB, 10);
+      if (suffixA) return 1;
+      if (suffixB) return -1;
+      return 0;
+    });
+
+    setAggrementsData(temp);
   }, [agreements]);
 
   useEffect(() => {
@@ -187,7 +219,7 @@ export default function CustomizedDataTable() {
           onProcessRowUpdateError={(err) => {
             console.log(err);
           }}
-          getRowId={(row) => row.appointmentNumber + row.appointmentNumber1}
+          getRowId={(row) => row.appointmentNumber1}
           processRowUpdate={processRowUpdate}
           loading={loading}
           getRowClassName={(params) => {
@@ -201,6 +233,7 @@ export default function CustomizedDataTable() {
           paginationModel={paginationModal}
           groupingColDef={{
             leafField: "appointmentNumber",
+            mainGroupingCriteria: "appointmentNumber1",
           }}
           defaultGroupingExpansionDepth={-1}
           initialState={initialState}
@@ -209,7 +242,7 @@ export default function CustomizedDataTable() {
           density="compact"
           columnGroupHeaderHeight={50}
           columnHeaderHeight={100}
-          rowGroupingColumnMode="single"
+          // rowGroupingColumnMode="single"
         />
       </div>
     </>

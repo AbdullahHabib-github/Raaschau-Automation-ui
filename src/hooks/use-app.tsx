@@ -26,6 +26,7 @@ import {
 export type Agreement = {
   id: string;
   appointmentNumber: string;
+  appointmentNumber1: string;
   subject: string;
   AgreementManager: string;
   Tilbud: string;

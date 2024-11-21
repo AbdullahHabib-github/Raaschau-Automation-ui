@@ -114,6 +114,9 @@ const getTilbud = (_, row: Agreement) => {
   const value = numberWithCommas(row.Tilbud) || 0;
   return value;
 };
+const getAppointmentNumber = (_, row: Agreement) => {
+  return row.appointmentNumber;
+};
 
 const getMontage = (_, row: Agreement) => {
   return row.Montage || "0";
@@ -147,6 +150,7 @@ const renderCell = (params: GridRenderCellParams<any, string>) => {
 };
 
 export const functionMap = {
+  appointmentNumber: getAppointmentNumber,
   Tilbud: getTilbud,
   Montage: getMontage,
   Montage_First: getMontage,
@@ -167,7 +171,8 @@ export const functionMap = {
 };
 
 export const fieldToAddCollection = [
-  // 'appointmentNumber',
+  "appointmentNumber",
+  "appointmentNumber1",
   // 'subject',
   // 'AgreementManager',
   // 'Real_Projektering_hr',
@@ -187,6 +192,9 @@ export const columns: GridColDef[] = [
     headerAlign: "right",
     align: "right",
     minWidth: 90,
+    valueGetter: (params, row) => {
+      return row.appointmentNumber1;
+    },
     maxWidth: 91,
     hideSortIcons: true,
     pinnable: true,
@@ -196,6 +204,13 @@ export const columns: GridColDef[] = [
     headerName: "Subject",
     minWidth: 240,
     maxWidth: 241,
+    valueGetter: (params) => {
+      if (params) {
+        return params;
+      } else {
+        return "Total";
+      }
+    },
     hideSortIcons: true,
     pinnable: true,
   },
@@ -206,13 +221,17 @@ export const columns: GridColDef[] = [
     maxWidth: 81,
     hideSortIcons: true,
     valueGetter: (params) => {
-      const name = (params as string) || "";
-      const initials = name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase();
-      return initials;
+      if (params) {
+        const name = (params as string) || "";
+        const initials = name
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .toUpperCase();
+        return initials;
+      } else {
+        return "-";
+      }
     },
   },
   {
@@ -223,7 +242,8 @@ export const columns: GridColDef[] = [
     minWidth: 140,
     maxWidth: 141,
     editable: true,
-    valueGetter: (parms) => {
+    valueGetter: (parms, row) => {
+      console.log(row);
       if (parms) {
         if (parms !== "0") {
           return parms + " DKK";
@@ -332,7 +352,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "estimatedProduction",
-    headerName: "Timer Tilbage",
+    headerName: "Produktion",
     headerAlign: "right",
     align: "right",
     minWidth: 100,
@@ -361,7 +381,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "Real_Svendetimer_hr",
-    headerName: "Timer Tilbage",
+    headerName: "Produktion",
     minWidth: 90,
     maxWidth: 91,
     headerAlign: "right",
