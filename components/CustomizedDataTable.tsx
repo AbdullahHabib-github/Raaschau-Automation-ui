@@ -233,7 +233,6 @@ export default function CustomizedDataTable() {
           paginationModel={paginationModal}
           groupingColDef={{
             leafField: "appointmentNumber",
-            mainGroupingCriteria: "appointmentNumber1",
           }}
           defaultGroupingExpansionDepth={-1}
           initialState={initialState}
