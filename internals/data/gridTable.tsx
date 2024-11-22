@@ -735,7 +735,7 @@ export const columns = (data): GridColDef[] => {
             }, 0);
           }
 
-          return totalReal_Svendetimer_hr;
+          return numberWithCommas(totalReal_Svendetimer_hr);
         } else {
           return parms;
         }
@@ -819,7 +819,7 @@ export const columns = (data): GridColDef[] => {
             }, 0);
           }
 
-          return totalReal_total_hr;
+          return numberWithCommas(totalReal_total_hr);
         } else {
           return parms;
         }
@@ -918,11 +918,12 @@ export const columns = (data): GridColDef[] => {
               const value = getRoundedValue(
                 (estimateproductionNew - realnew).toFixed(1)
               );
+
               return sum + Number(value);
             }, 0);
           }
 
-          return totalTimerTilbag;
+          return numberWithCommas(totalTimerTilbag);
         } else {
           const estimatedProduction = getEstimatedProduction(params, row);
           const estimateproductionNew = Number(
@@ -1120,7 +1121,7 @@ export const columns = (data): GridColDef[] => {
             }, 0);
           }
 
-          return totalPlusMinus;
+          return numberWithCommas(totalPlusMinus);
         } else {
           const estimate = Number(row.Real_Svendetimer_hr || 0);
           const real = Number(
@@ -1172,7 +1173,7 @@ export const columns = (data): GridColDef[] => {
             }, 0);
           }
 
-          return totalEstimatedMontage;
+          return numberWithCommas(totalEstimatedMontage);
         } else {
           const estimate = Number(row.estimatedMontage || 0);
           const real = Number(row.Real_Montagetimer_hr || 0);
