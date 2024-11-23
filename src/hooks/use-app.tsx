@@ -2,19 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import {
   collection,
   getDocs,
-  limit,
-  query,
-  startAfter,
-  getCountFromServer,
-  orderBy,
-  endBefore,
-  limitToLast,
   QueryDocumentSnapshot,
   updateDoc,
   doc,
+  query,
   setDoc,
   where,
-  startAt,
+  orderBy,
   QueryConstraint,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
@@ -26,7 +20,6 @@ import {
 export type Agreement = {
   id: string;
   appointmentNumber: string;
-  appointmentNumber1: string;
   subject: string;
   AgreementManager: string;
   Tilbud: string;
@@ -60,6 +53,7 @@ export const useApp = () => {
   const [counts, setCounts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [agreements, setAgreements] = useState<Agreement[]>([]);
+  const [pagedAgreements, setPagedAgreements] = useState<Agreement[]>([]);
   const [paginationModal, setPaginationModal] = useState<Pagination>({
     page: 0,
     pageSize: 50,
@@ -91,20 +85,30 @@ export const useApp = () => {
       });
   }
 
-  // get agreements from DB, sorted and filtered default
+  // Natural sort comparison function
+  function naturalSort(a: string, b: string) {
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+  }
+
+  // Fetch all agreements from DB
   async function getAgreements(q: QueryConstraint[]) {
     setLoading(true);
     try {
       const snapShot = await getDocs(
         query(
           collection(db, "agreements"),
-          // where("Tilbud", ">=", 40000),
-          orderBy("Tilbud", "desc"),
+          where("done", "==", onlyDone),
           ...q
         )
       );
-      const arr: Agreement[] = snapShot.docs.map(processRow);
-      setAgreements(arr);
+      const allAgreements = snapShot.docs.map(processRow);
+
+      // Sort by agreementNumber using natural sort
+      allAgreements.sort((a, b) => naturalSort(a.appointmentNumber, b.appointmentNumber));
+
+      setAgreements(allAgreements);
+      setCounts(allAgreements.length);
+      updatePagedAgreements(allAgreements);
     } catch (err) {
       console.log("oh no");
       console.log(err);
@@ -113,55 +117,23 @@ export const useApp = () => {
     }
   }
 
-  // refresh count and agreements and set the pagination to beginning
-  const memoisedCount = useCallback(async () => {
-    console.log("memoised call");
+  const updatePagedAgreements = (allAgreements: Agreement[]) => {
+    const startIndex = paginationModal.page * paginationModal.pageSize;
+    const pagedData = allAgreements.slice(startIndex, startIndex + paginationModal.pageSize);
+    setPagedAgreements(pagedData);
+  };
+
+  useEffect(() => {
     const q: QueryConstraint[] = [where("done", "==", onlyDone)];
-    try {
-      // const snapShot = await getCountFromServer(
-      //   query(collection(db, "agreements"), where("Tilbud", ">=", 40000), ...q)
-      // );
-      const snapShot = await getCountFromServer(
-        query(collection(db, "agreements"), ...q)
-      );
-      console.log("DoneOnly is ", onlyDone, snapShot.data().count);
-      setCounts(snapShot.data().count);
-      getAgreements([...q, limit(paginationModal.pageSize)]);
-      setPaginationModal((v) => ({ ...v, page: 0 }));
-    } catch (err) {
-      console.error("Failed to get counts", err);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getAgreements(q);
   }, [onlyDone]);
 
-  // refresh on change in onlyDone state
   useEffect(() => {
-    memoisedCount();
-  }, [memoisedCount]);
+    updatePagedAgreements(agreements);
+  }, [paginationModal, agreements]);
 
-  // when changing pagination
   function customPagination(v: Pagination) {
-    const arr: QueryConstraint[] = [where("done", "==", onlyDone)];
-
-    if (paginationModal.page < v.page) {
-      console.log("right pressed");
-      arr.push(startAfter(agreements.at(-1)?.Tilbud));
-      arr.push(limit(paginationModal.pageSize));
-    } else if (paginationModal.page > v.page) {
-      console.log("left pressed");
-      arr.push(orderBy("Tilbud", "desc"));
-      arr.push(endBefore(agreements.at(0)?.Tilbud));
-      arr.push(limitToLast(paginationModal.pageSize));
-    } else {
-      console.log("size changed");
-      if (agreements.at(0)?.subject) {
-        arr?.push(startAt(agreements.at(0).Tilbud));
-      }
-      arr.push(limit(v.pageSize));
-    }
-    setPaginationModal({ ...v });
-    console.log("pagination model", v);
-    getAgreements(arr);
+    setPaginationModal(v);
   }
 
   async function updateRecord(temp: Agreement) {
@@ -185,9 +157,8 @@ export const useApp = () => {
     Object.keys(functionMap).forEach((k) => {
       const temp = functionMap[k](undefined, updatedRow);
       calculatedFields[k] = temp;
-      if (_originalRow[k] != temp) {
+      if (_originalRow[k] !== temp) {
         updated = true;
-        // console.log('updated', _originalRow[k], temp, k);
       }
     });
 
@@ -196,15 +167,14 @@ export const useApp = () => {
       ...calculatedFields,
     };
     updateRecord(data);
-    const nn = {
+    return {
       ...data,
       updated,
     };
-    return nn;
   }
 
   return {
-    agreements,
+    agreements: pagedAgreements, // Return only the paged agreements
     loading,
     paginationModal,
     setPaginationModal: customPagination,
