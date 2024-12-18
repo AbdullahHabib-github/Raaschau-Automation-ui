@@ -12,3 +12,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+
+import { doc, updateDoc } from "firebase/firestore";
+
+export const updateFirebaseDocument = async (collection, docId, data) => {
+  try {
+    const docRef = doc(db, collection, docId);
+    await updateDoc(docRef, data);
+    console.log("Document successfully updated!");
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+};

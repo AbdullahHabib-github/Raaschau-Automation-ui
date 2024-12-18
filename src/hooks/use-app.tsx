@@ -24,7 +24,9 @@ export type Agreement = {
   AgreementManager: string;
   Tilbud: string;
   Montage: string;
+  Montage_First: string;
   Underleverandør: string;
+  Underleverandør_First: string;
   Materialer: string;
   estimatedProjection: string;
   estimatedProduction: string;
@@ -136,40 +138,56 @@ export const useApp = () => {
     setPaginationModal(v);
   }
 
-  async function updateRecord(temp: Agreement) {
+  async function updateRecord(updated: Agreement) {
     try {
-      const agreementDocRef = doc(db, "agreements", temp.id);
-      const obj = {};
-      fieldToAddCollection.forEach((v) => {
-        obj[v] = temp[v];
-      });
-      await setDoc(agreementDocRef, temp);
-      await updateDoc(agreementDocRef, {});
+      const agreementDocRef = doc(db, "agreements", updated.id);
+  
+      // Use only changed fields for update
+      const fieldsToUpdate: Partial<Agreement> = {
+        Montage: updated.Montage,
+        Underleverandør: updated.Underleverandør,
+        // Add any other fields that need to be updated
+      };
+  
+      // Update only changed fields
+      await updateDoc(agreementDocRef, fieldsToUpdate);
+      console.log(`Document with ID ${updated.id} successfully updated`);
     } catch (err) {
-      console.log("failed to update entry", err);
+      console.error("Failed to update entry:", err);
     }
   }
 
-  function processRowUpdate(updatedRow: Agreement, _originalRow: Agreement) {
-    const calculatedFields = {};
+  function processRowUpdate(updatedRow: Agreement, originalRow: Agreement) {
+    const calculatedFields: Partial<Agreement> = {};
     let updated = false;
-
-    Object.keys(functionMap).forEach((k) => {
-      const temp = functionMap[k](undefined, updatedRow);
-      calculatedFields[k] = temp;
-      if (_originalRow[k] !== temp) {
+  
+    // Detect changes in "Montage" and "Underleverandør"
+    const montageChanged = updatedRow.Montage !== originalRow.Montage;
+    const underleverandorChanged = updatedRow.Underleverandør !== originalRow.Underleverandør;
+  
+    // Update calculated fields if needed
+    Object.keys(functionMap).forEach((key) => {
+      const calculatedValue = functionMap[key](undefined, updatedRow);
+      calculatedFields[key] = calculatedValue;
+      if (originalRow[key] !== calculatedValue) {
         updated = true;
       }
     });
-
-    const data = {
+  
+    const dataToUpdate = {
       ...updatedRow,
       ...calculatedFields,
     };
-    updateRecord(data);
+  
+    // Update Firebase only if there's a change
+    if (montageChanged || underleverandorChanged || updated) {
+      updateRecord(dataToUpdate);
+    }
+  
     return {
-      ...data,
-      updated,
+      ...updatedRow,
+      ...calculatedFields,
+      updated: montageChanged || underleverandorChanged || updated,
     };
   }
 
