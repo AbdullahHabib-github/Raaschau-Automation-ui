@@ -24,9 +24,9 @@ export type Agreement = {
   AgreementManager: string;
   Tilbud: string;
   Montage: string;
-  Montage_First: string;
+  Montage_API: string;
   Underleverandør: string;
-  Underleverandør_First: string;
+  Underleverandør_API: string;
   Materialer: string;
   estimatedProjection: string;
   estimatedProduction: string;
@@ -73,6 +73,8 @@ export const useApp = () => {
 
     return {
       ...data,
+      // Montage_First: data.Montage_API, // Explicitly mapping fields (if needed)
+      // Underleverandør_First: data.Underleverandør_API,
       ...calculatedFields,
       id: v.id,
       updated: false,

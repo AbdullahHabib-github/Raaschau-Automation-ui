@@ -118,8 +118,14 @@ const getAppointmentNumber = (_, row: Agreement) => {
 const getMontage = (_, row: Agreement) => {
   return row.Montage || "0";
 };
+const getMontage_API = (_, row: Agreement) => {
+  return row.Montage_API || "0";
+};
 const getUnderleverandør = (_, row: Agreement) => {
   return row.Underleverandør || "0";
+};
+const getUnderleverandør_API = (_, row: Agreement) => {
+  return row.Underleverandør_API || "0";
 };
 const getNy = (_, row: Agreement) => {
   return row.ny || "0";
@@ -160,8 +166,8 @@ export const functionMap = {
   appointmentNumber: getAppointmentNumber,
   Tilbud: getTilbud,
   Montage: getMontage,
-  Montage_First: getMontage,
-  Underleverandør_First: getUnderleverandør,
+  Montage_First: getMontage_API,
+  Underleverandør_First: getUnderleverandør_API,
   Underleverandør: getUnderleverandør,
   Materialer: getMaterial,
   estimatedProjection: getEstimatedProjection,
