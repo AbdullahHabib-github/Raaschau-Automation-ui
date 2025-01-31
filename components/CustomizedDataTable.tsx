@@ -1,5 +1,5 @@
-// import { DataGrid } from "@mui/x-data-grid";
-// import { DataGridPro } from "@mui/x-data-grid-pro";
+// CustomizedDataTable.tsx
+
 import {
   DataGridPremium,
   GRID_ROW_GROUPING_SINGLE_GROUPING_FIELD,

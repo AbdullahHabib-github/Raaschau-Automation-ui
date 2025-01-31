@@ -1,3 +1,5 @@
+//gridTable.tsx
+
 import {
   GridColDef,
   GridColumnGroup,
@@ -161,6 +163,35 @@ const renderCell = (params: GridRenderCellParams<any, string>) => {
     </Stack>
   );
 };
+
+// const renderCell = (params: GridRenderCellParams<any, string>) => {
+//   const isGroupHeader = String(params.id).includes(
+//     "auto-generated-row-appointmentNumber"
+//   );
+  
+//   // Get the base appointment number (before any hyphen)
+//   const baseAppointmentNumber = params.row.appointmentNumber1?.split('-')[0];
+  
+//   // Check if this appointment number exists multiple times in the data
+//   // If it does, it's part of a group (either as header or member)
+//   const isPartOfGroup = aggrementsData.filter(
+//     row => row.appointmentNumber1?.split('-')[0] === baseAppointmentNumber
+//   ).length > 1;
+
+//   return (
+//     <Stack
+//       sx={{
+//         backgroundColor: 
+//           isGroupHeader ? getColor(params.value) :      // Group header gets color
+//           isPartOfGroup ? "transparent" :               // Any row part of a group stays transparent
+//           getColor(params.value),                       // Independent rows get color
+//         fontWeight: isGroupHeader ? 600 : "normal",
+//       }}
+//     >
+//       {params.value}
+//     </Stack>
+//   );
+// };
 
 export const functionMap = {
   appointmentNumber: getAppointmentNumber,
@@ -1007,8 +1038,33 @@ export const columns = (data): GridColDef[] => {
       maxWidth: 101,
       headerAlign: "right",
       align: "right",
-      renderCell,
-      // valueGetter: getProjectionDiff,
+      renderCell: (params: GridRenderCellParams<any, string>) => {
+        const isGroupHeader = String(params.id).includes(
+          "auto-generated-row-appointmentNumber"
+        );
+        
+        // Get the base appointment number
+        const baseAppointmentNumber = params.row.appointmentNumber1?.split('-')[0];
+        
+        // Check if this appointment number exists multiple times
+        const isPartOfGroup = data.filter(
+          row => row.appointmentNumber1?.split('-')[0] === baseAppointmentNumber
+        ).length > 1;
+    
+        return (
+          <Stack
+            sx={{
+              backgroundColor: 
+                isGroupHeader ? getColor(params.value) :    // Group header gets color
+                isPartOfGroup ? "transparent" :             // Grouped rows stay transparent
+                getColor(params.value),                     // Independent rows get color
+              fontWeight: isGroupHeader ? 600 : "normal",
+            }}
+          >
+            {params.value}
+          </Stack>
+        );
+      },
       valueGetter: (parms, row) => {
         if (parms === undefined) {
           const grouped = data.reduce((acc, item) => {
@@ -1019,35 +1075,35 @@ export const columns = (data): GridColDef[] => {
             acc[base].push(item);
             return acc;
           }, {});
-
+    
           const result = Object.keys(grouped).reduce((acc, key) => {
             acc[key] = grouped[key];
             return acc;
           }, {});
-
+    
           let totalProjektering = 0;
           const symbols = Object.getOwnPropertySymbols(row);
-
+    
           let id = row[symbols[0]];
           id = id.split("/").pop();
           if (result[id]?.length > 1) {
             totalProjektering = result[id]?.reduce((sum, item) => {
               const estimate = Number(item.estimatedProjection || 0);
               const real = Number(item.Real_Projektering_hr || 0);
-
+    
               const value = getRoundedValue((estimate - real).toFixed(1));
-
+    
               return sum + Number(value);
             }, 0);
           }
-
+    
           return totalProjektering;
         } else {
           const estimate = Number(row.estimatedProjection || 0);
           const real = Number(row.Real_Projektering_hr || 0);
-
+    
           const value = getRoundedValue((estimate - real).toFixed(1));
-
+    
           return value;
         }
       },
@@ -1304,8 +1360,30 @@ export const columns = (data): GridColDef[] => {
       maxWidth: 100,
       headerAlign: "right",
       align: "right",
-      renderCell,
-      // valueGetter: getPlusMinus,
+      renderCell: (params: GridRenderCellParams<any, string>) => {
+        const isGroupHeader = String(params.id).includes(
+          "auto-generated-row-appointmentNumber"
+        );
+        
+        const baseAppointmentNumber = params.row.appointmentNumber1?.split('-')[0];
+        const isPartOfGroup = data.filter(
+          row => row.appointmentNumber1?.split('-')[0] === baseAppointmentNumber
+        ).length > 1;
+    
+        return (
+          <Stack
+            sx={{
+              backgroundColor: 
+                isGroupHeader ? getColor(params.value) :
+                isPartOfGroup ? "transparent" :
+                getColor(params.value),
+              fontWeight: isGroupHeader ? 600 : "normal",
+            }}
+          >
+            {params.value}
+          </Stack>
+        );
+      },
       valueGetter: (params, row) => {
         if (params === undefined) {
           const grouped = data.reduce((acc, item) => {
@@ -1316,15 +1394,15 @@ export const columns = (data): GridColDef[] => {
             acc[base].push(item);
             return acc;
           }, {});
-
+    
           const result = Object.keys(grouped).reduce((acc, key) => {
             acc[key] = grouped[key];
             return acc;
           }, {});
-
+    
           let totalPlusMinus = 0;
           const symbols = Object.getOwnPropertySymbols(row);
-
+    
           let id = row[symbols[0]];
           id = id.split("/").pop();
           if (result[id]?.length > 1) {
@@ -1338,7 +1416,7 @@ export const columns = (data): GridColDef[] => {
               return sum + Number(value);
             }, 0);
           }
-
+    
           return numberWithCommas(totalPlusMinus);
         } else {
           const estimate = Number(row.Real_Svendetimer_hr || 0);
@@ -1359,8 +1437,30 @@ export const columns = (data): GridColDef[] => {
       maxWidth: 90,
       headerAlign: "right",
       align: "right",
-      renderCell,
-      // valueGetter: getMontageDiff,
+      renderCell: (params: GridRenderCellParams<any, string>) => {
+        const isGroupHeader = String(params.id).includes(
+          "auto-generated-row-appointmentNumber"
+        );
+        
+        const baseAppointmentNumber = params.row.appointmentNumber1?.split('-')[0];
+        const isPartOfGroup = data.filter(
+          row => row.appointmentNumber1?.split('-')[0] === baseAppointmentNumber
+        ).length > 1;
+    
+        return (
+          <Stack
+            sx={{
+              backgroundColor: 
+                isGroupHeader ? getColor(params.value) :
+                isPartOfGroup ? "transparent" :
+                getColor(params.value),
+              fontWeight: isGroupHeader ? 600 : "normal",
+            }}
+          >
+            {params.value}
+          </Stack>
+        );
+      },
       valueGetter: (parms, row) => {
         if (parms === undefined) {
           const grouped = data.reduce((acc, item) => {
@@ -1371,15 +1471,15 @@ export const columns = (data): GridColDef[] => {
             acc[base].push(item);
             return acc;
           }, {});
-
+    
           const result = Object.keys(grouped).reduce((acc, key) => {
             acc[key] = grouped[key];
             return acc;
           }, {});
-
+    
           let totalEstimatedMontage = 0;
           const symbols = Object.getOwnPropertySymbols(row);
-
+    
           let id = row[symbols[0]];
           id = id.split("/").pop();
           if (result[id]?.length > 1) {
@@ -1390,7 +1490,7 @@ export const columns = (data): GridColDef[] => {
               return sum + Number(value);
             }, 0);
           }
-
+    
           return numberWithCommas(totalEstimatedMontage);
         } else {
           const estimate = Number(row.estimatedMontage || 0);
