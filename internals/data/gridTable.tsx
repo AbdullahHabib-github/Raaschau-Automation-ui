@@ -24,45 +24,63 @@ const getRoundedValue = (num: string) => {
     return Math.ceil(v);
   }
 };
-
 const getMaterial = (_, v: Agreement) => {
-  const [tilbud, montage, under] = [
-    // Number(v.Tilbud || 0),
-    Number(v.Tilbud?.toString().replace(/,/g, "") || 0),
-    Number(v.Montage || 0),
-    Number(v.Underleverandør || 0),
-  ];
+  const tilbud = Number(v.Tilbud?.toString().replace(/,/g, "") || 0);
+  const montage =
+    v.Montage == null || Number(v.Montage) === 0
+      ? Number(v.Montage_API || 0)
+      : Number(v.Montage);
+  const under =
+    v.Underleverandør == null || Number(v.Underleverandør) === 0
+      ? Number(v.Underleverandør_API || 0)
+      : Number(v.Underleverandør);
+      
   let value = getRoundedValue(((tilbud - montage - under) * 0.25).toFixed(0));
   value = numberWithCommas(value);
   return value;
 };
+
 const getEstimatedProjection = (_, v: Agreement) => {
-  const [tilbud, montage] = [
-    Number(v.Tilbud?.toString().replace(/,/g, "") || 0),
-    Number(v.Montage || 0),
-  ];
+  const tilbud = Number(v.Tilbud?.toString().replace(/,/g, "") || 0);
+  const montage =
+    v.Montage == null || Number(v.Montage) === 0
+      ? Number(v.Montage_API || 0)
+      : Number(v.Montage);
+      
   let value = getRoundedValue((((tilbud - montage) * 0.1) / 830).toFixed(1));
   value = numberWithCommas(value);
   return value;
 };
+
 const getEstimatedProduction = (_, v: Agreement) => {
-  const [tilbud, montage, under, material, estimate] = [
-    Number(v.Tilbud?.toString().replace(/,/g, "") || 0),
-    Number(v.Montage || 0),
-    Number(v.Underleverandør || 0),
-    Number(v.Materialer?.toString().replace(/,/g, "") || 0),
-    Number(v.estimatedProjection || 0),
-  ];
+  const tilbud = Number(v.Tilbud?.toString().replace(/,/g, "") || 0);
+  const montage =
+    v.Montage == null || Number(v.Montage) === 0
+      ? Number(v.Montage_API || 0)
+      : Number(v.Montage);
+  const under =
+    v.Underleverandør == null || Number(v.Underleverandør) === 0
+      ? Number(v.Underleverandør_API || 0)
+      : Number(v.Underleverandør);
+  const material = Number(v.Materialer?.toString().replace(/,/g, "") || 0);
+  const estimate = Number(v.estimatedProjection || 0);
+
   let value = getRoundedValue(
     ((tilbud - montage - under - material) / 750 - estimate).toFixed(1)
   );
   value = numberWithCommas(value);
   return value;
 };
+
 const getEstimatedMontage = (_, v: Agreement) => {
-  const [montage] = [Number(v.Montage || 0)];
+  const montage =
+    v.Montage == null || Number(v.Montage) === 0
+      ? Number(v.Montage_API || 0)
+      : Number(v.Montage);
+      
   return getRoundedValue(((montage - montage * 0.08) / 630).toFixed(1));
 };
+
 const getProjectionDiff = (_, v: Agreement) => {
   const [estimate, real] = [
     Number(v.estimatedProjection || 0),
