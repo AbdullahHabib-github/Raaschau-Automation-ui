@@ -327,6 +327,19 @@ export const columns = (data): GridColDef[] => {
       minWidth: 140,
       maxWidth: 141,
       editable: true,
+      sortComparator: (v1, v2, params1, params2) => {
+        // Extract numeric values from strings like "1234 DKK"
+        const getValue = (value) => {
+          if (!value || value === '0') return 0;
+          // Remove DKK and commas, then convert to float
+          return parseFloat(String(value).replace(" DKK", "").replace(/,/g, "")) || 0;
+        };
+        
+        const num1 = getValue(v1);
+        const num2 = getValue(v2);
+        
+        return num1 - num2;
+      },
       valueGetter: (parms, row) => {
         if (parms === undefined) {
           const grouped = data.reduce((acc, item) => {
@@ -374,7 +387,7 @@ export const columns = (data): GridColDef[] => {
         );
         return <span>{value}</span>;
       },
-      hideSortIcons: true,
+      // hideSortIcons: true,
     },
     {
       field: "Montage_First",
@@ -608,6 +621,19 @@ export const columns = (data): GridColDef[] => {
       align: "right",
       minWidth: 140,
       maxWidth: 141,
+      sortComparator: (v1, v2, params1, params2) => {
+        // Extract numeric values from strings like "1234 DKK"
+        const getValue = (value) => {
+          if (!value || value === '0') return 0;
+          // Remove DKK and commas, then convert to float
+          return parseFloat(String(value).replace(" DKK", "").replace(/,/g, "")) || 0;
+        };
+        
+        const num1 = getValue(v1);
+        const num2 = getValue(v2);
+        
+        return num1 - num2;
+      },
       valueGetter: (parms, row) => {
         if (parms === undefined) {
           const grouped = data.reduce((acc, item) => {
@@ -655,7 +681,7 @@ export const columns = (data): GridColDef[] => {
         );
         return <span>{value}</span>;
       },
-      hideSortIcons: true,
+      // hideSortIcons: true,
     },
     {
       field: "estimatedProjection",
